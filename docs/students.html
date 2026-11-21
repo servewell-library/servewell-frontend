@@ -1,0 +1,1464 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Students Management | SERVEWELL</title>
+
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/glass_theme.css">
+
+<style>
+/* =========================================
+   ORIGINAL SERVEWELL SIDEBAR
+========================================= */
+.sidebar-menu { overflow-y:auto; }
+
+.sidebar-group-button {
+    width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:12px 14px;
+    margin-top:8px;
+    border:none;
+    background:transparent;
+    color:inherit;
+    font:inherit;
+    font-size:12px;
+    font-weight:700;
+    text-align:left;
+    cursor:pointer;
+    letter-spacing:.5px;
+}
+
+.sidebar-group-button:hover {
+    background:rgba(255,255,255,.08);
+}
+
+.sidebar-group-button .group-arrow {
+    transition:transform .2s ease;
+}
+
+.sidebar-group-button[aria-expanded="true"] .group-arrow {
+    transform:rotate(90deg);
+}
+
+.sidebar-submenu {
+    display:none;
+    padding-left:8px;
+}
+
+.sidebar-submenu.open { display:block; }
+
+.sidebar-submenu a {
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:11px 14px;
+    margin:3px 0;
+    text-decoration:none;
+}
+
+.sidebar-submenu a span { min-width:18px; }
+
+.sidebar-direct-link {
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:12px 14px;
+    text-decoration:none;
+}
+
+/* =========================================
+   STUDENTS MANAGEMENT CONTENT
+========================================= */
+.students-heading {
+    margin-bottom:25px;
+}
+
+.students-heading h1 {
+    color:#fff;
+    font-size:27px;
+    margin-bottom:8px;
+    text-shadow:0 2px 8px rgba(0,0,0,.2);
+}
+
+.students-heading p {
+    color:#d0deec;
+    font-size:13px;
+    line-height:1.6;
+}
+
+.students-stats {
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:17px;
+    margin-bottom:22px;
+}
+
+.student-stat-card {
+    background:linear-gradient(
+        135deg,
+        rgba(255,255,255,.14),
+        rgba(255,255,255,.045)
+    );
+    border:1px solid rgba(255,255,255,.17);
+    border-radius:14px;
+    padding:21px;
+    color:#fff;
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+    box-shadow:0 10px 30px rgba(0,0,0,.12);
+}
+
+.student-stat-card span {
+    display:block;
+    color:#bdcce2;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:1px;
+    text-transform:uppercase;
+}
+
+.student-stat-card strong {
+    display:block;
+    color:#fff;
+    font-size:31px;
+    margin-top:9px;
+}
+
+.students-panel {
+    background:linear-gradient(
+        135deg,
+        rgba(255,255,255,.13),
+        rgba(255,255,255,.045)
+    );
+    border:1px solid rgba(255,255,255,.17);
+    border-radius:16px;
+    padding:23px;
+    color:#fff;
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+    box-shadow:0 10px 30px rgba(0,0,0,.13);
+    min-width:0;
+}
+
+.students-panel-header {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    flex-wrap:wrap;
+    margin-bottom:20px;
+}
+
+.students-panel-header h2 {
+    color:#fff;
+    font-size:18px;
+}
+
+.students-panel-header p {
+    color:#bdcce2;
+    font-size:11px;
+    margin-top:5px;
+}
+
+.students-toolbar {
+    display:flex;
+    gap:10px;
+    align-items:center;
+    flex-wrap:wrap;
+    margin-bottom:18px;
+}
+
+.students-search {
+    flex:1;
+    min-width:200px;
+    height:42px;
+    padding:0 13px;
+    border-radius:8px;
+    border:1px solid rgba(255,255,255,.2);
+    background:rgba(4,19,39,.28);
+    color:#fff;
+    outline:none;
+    font-size:12px;
+}
+
+.students-search::placeholder { color:#b7c7da; }
+
+.students-search:focus {
+    border-color:#75baff;
+    box-shadow:0 0 0 3px rgba(85,169,255,.12);
+}
+
+.student-action-button {
+    border:1px solid rgba(255,255,255,.18);
+    border-radius:8px;
+    padding:11px 15px;
+    font-size:11px;
+    font-weight:700;
+    cursor:pointer;
+    color:#fff;
+    background:rgba(255,255,255,.10);
+    transition:.2s;
+}
+
+.student-action-button.primary {
+    background:linear-gradient(115deg,#287fe0,#625de0);
+}
+
+.student-action-button:hover { filter:brightness(1.12); }
+
+.student-action-button:disabled {
+    opacity:.5;
+    cursor:not-allowed;
+}
+
+.students-table-wrap {
+    width:100%;
+    overflow-x:auto;
+    border:1px solid rgba(255,255,255,.13);
+    border-radius:10px;
+}
+
+.students-table {
+    width:100%;
+    min-width:760px;
+    border-collapse:collapse;
+}
+
+.students-table th {
+    background:rgba(3,17,37,.36);
+    color:#c9d9ec;
+    font-size:10px;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    text-align:left;
+    padding:14px 13px;
+    white-space:nowrap;
+}
+
+.students-table td {
+    color:#edf5ff;
+    font-size:12px;
+    padding:14px 13px;
+    border-top:1px solid rgba(255,255,255,.09);
+}
+
+.students-table tbody tr:hover {
+    background:rgba(255,255,255,.055);
+}
+
+.student-status {
+    display:inline-block;
+    padding:5px 10px;
+    border-radius:20px;
+    font-size:10px;
+    font-weight:700;
+}
+
+.student-status.active {
+    color:#baf5d9;
+    background:rgba(28,150,98,.18);
+    border:1px solid rgba(83,220,158,.24);
+}
+
+.student-status.inactive {
+    color:#ffd0d4;
+    background:rgba(190,65,75,.16);
+    border:1px solid rgba(255,130,140,.25);
+}
+
+.table-actions {
+    display:flex;
+    gap:7px;
+    align-items:center;
+}
+
+.table-action {
+    padding:7px 10px;
+    border-radius:6px;
+    font-size:10px;
+    font-weight:700;
+    cursor:pointer;
+    color:#fff;
+    border:1px solid rgba(255,255,255,.2);
+    background:rgba(255,255,255,.10);
+}
+
+.table-action.edit {
+    background:rgba(40,127,224,.23);
+    border-color:rgba(100,175,255,.3);
+}
+
+.table-action.delete {
+    background:rgba(190,65,75,.20);
+    border-color:rgba(255,130,140,.25);
+}
+
+.table-action:hover { filter:brightness(1.2); }
+
+.table-empty {
+    text-align:center;
+    color:#bdcce2;
+    padding:35px 15px !important;
+    line-height:1.6;
+}
+
+.students-message {
+    display:none;
+    padding:12px 15px;
+    border-radius:9px;
+    margin-bottom:17px;
+    font-size:12px;
+    line-height:1.6;
+    overflow-wrap:anywhere;
+}
+
+.students-message.success {
+    display:block;
+    color:#baf5d9;
+    background:rgba(28,150,98,.15);
+    border:1px solid rgba(83,220,158,.25);
+}
+
+.students-message.error {
+    display:block;
+    color:#ffd0d4;
+    background:rgba(190,65,75,.16);
+    border:1px solid rgba(255,130,140,.25);
+}
+
+.students-message.info {
+    display:block;
+    color:#d7eaff;
+    background:rgba(55,130,220,.15);
+    border:1px solid rgba(125,185,255,.22);
+}
+
+/* =========================================
+   STUDENT FORM MODAL
+========================================= */
+.student-modal-backdrop {
+    position:fixed;
+    inset:0;
+    z-index:1000;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:18px;
+    background:rgba(3,13,29,.72);
+    backdrop-filter:blur(7px);
+}
+
+.student-modal-backdrop[hidden] { display:none; }
+
+.student-modal {
+    width:100%;
+    max-width:620px;
+    max-height:92vh;
+    overflow-y:auto;
+    padding:27px;
+    border-radius:15px;
+    color:#fff;
+    background:linear-gradient(
+        145deg,
+        rgba(20,48,79,.98),
+        rgba(8,26,49,.98)
+    );
+    border:1px solid rgba(255,255,255,.19);
+    box-shadow:0 20px 60px rgba(0,0,0,.35);
+}
+
+.student-modal h2 {
+    font-size:21px;
+    margin-bottom:7px;
+}
+
+.student-modal-description {
+    color:#bdcce2;
+    font-size:12px;
+    line-height:1.6;
+    margin-bottom:22px;
+}
+
+.student-form-grid {
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+}
+
+.student-form-group label {
+    display:block;
+    color:#d8e6f5;
+    font-size:11px;
+    font-weight:700;
+    margin-bottom:8px;
+}
+
+.student-form-group input,
+.student-form-group select {
+    width:100%;
+    height:43px;
+    padding:0 12px;
+    border:1px solid rgba(255,255,255,.2);
+    border-radius:7px;
+    outline:none;
+    background:rgba(255,255,255,.09);
+    color:#fff;
+    font-family:Arial,sans-serif;
+    font-size:12px;
+}
+
+.student-form-group input:focus,
+.student-form-group select:focus {
+    border-color:#75baff;
+    box-shadow:0 0 0 3px rgba(85,169,255,.12);
+}
+
+.student-form-group select option {
+    color:#102b49;
+    background:#fff;
+}
+
+.student-modal-actions {
+    display:flex;
+    justify-content:flex-end;
+    gap:10px;
+    margin-top:25px;
+    flex-wrap:wrap;
+}
+
+.student-modal-actions button {
+    min-width:110px;
+}
+
+.student-modal-message {
+    display:none;
+    padding:11px 13px;
+    margin-bottom:16px;
+    border-radius:8px;
+    font-size:12px;
+    line-height:1.5;
+}
+
+.student-modal-message.error {
+    display:block;
+    color:#ffd0d4;
+    background:rgba(190,65,75,.16);
+    border:1px solid rgba(255,130,140,.25);
+}
+
+.student-modal-message.success {
+    display:block;
+    color:#baf5d9;
+    background:rgba(28,150,98,.15);
+    border:1px solid rgba(83,220,158,.25);
+}
+
+.admin-footer {
+    margin-top:0;
+}
+
+@media(max-width:950px) {
+    .students-stats {
+        grid-template-columns:repeat(3,minmax(0,1fr));
+    }
+}
+
+@media(max-width:700px) {
+    .students-stats {
+        grid-template-columns:1fr;
+    }
+
+    .students-panel { padding:16px; }
+
+    .students-heading h1 { font-size:22px; }
+
+    .student-form-grid { grid-template-columns:1fr; }
+
+    .student-modal { padding:20px; }
+}
+
+@media(prefers-reduced-motion:reduce) {
+    *,
+    *::before,
+    *::after {
+        transition-duration:.01ms !important;
+    }
+}
+</style>
+</head>
+
+<body class="admin-page">
+
+<div class="admin-layout">
+
+    <!-- ORIGINAL SERVEWELL SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="sidebar-brand">
+            <img src="assets/images/school_logo.jfif" alt="School Logo">
+            <div>
+                <h2>SERVEWELL</h2>
+                <p>Library Management</p>
+            </div>
+        </div>
+
+        <div class="sidebar-menu">
+
+            <p class="menu-heading">MAIN MENU</p>
+
+            <a href="dashboard.html" class="sidebar-direct-link">
+                <span>▦</span> Dashboard
+            </a>
+
+            <a href="scanner_center.html" class="sidebar-direct-link">
+                <span>⌕</span> Scanner Center
+            </a>
+
+            <button type="button"
+                    class="sidebar-group-button"
+                    data-menu-toggle="library-menu"
+                    aria-expanded="true">
+                <span>LIBRARY MANAGEMENT</span>
+                <span class="group-arrow">›</span>
+            </button>
+
+            <div id="library-menu" class="sidebar-submenu open">
+
+                <a href="students.html" class="active">
+                    <span>♙</span> Students
+                </a>
+
+                <a href="teachers.html">
+                    <span>♙</span> Teachers
+                </a>
+
+                <a href="special_visitors.html">
+                    <span>♧</span> Special Visitors
+                </a>
+
+                <a href="books.html">
+                    <span>▤</span> Book Inventory
+                </a>
+
+                <a href="borrowing.html">
+                    <span>⇄</span> Borrowing Records
+                </a>
+
+                <a href="returns.html">
+                    <span>↩</span> Return Books
+                </a>
+
+            </div>
+
+            <button type="button"
+                    class="sidebar-group-button"
+                    data-menu-toggle="printable-menu"
+                    aria-expanded="false">
+                <span>PRINTABLES &amp; QR CODES</span>
+                <span class="group-arrow">›</span>
+            </button>
+
+            <div id="printable-menu" class="sidebar-submenu">
+
+                <a href="student_qr.html"><span>▣</span> Student QR Cards</a>
+                <a href="teacher_qr.html"><span>▣</span> Teacher QR Cards</a>
+                <a href="book_qr.html"><span>▣</span> Book QR Codes</a>
+                <a href="visitor_id.html"><span>▤</span> Printable Visitor IDs</a>
+
+            </div>
+
+            <button type="button"
+                    class="sidebar-group-button"
+                    data-menu-toggle="activity-menu"
+                    aria-expanded="false">
+                <span>LIBRARY ACTIVITY</span>
+                <span class="group-arrow">›</span>
+            </button>
+
+            <div id="activity-menu" class="sidebar-submenu">
+
+                <a href="library_entry_logs.html">
+                    <span>◷</span> Library Entry Logs
+                </a>
+
+                <a href="visitor_logs.html">
+                    <span>◷</span> Visitor Logs
+                </a>
+
+            </div>
+
+            <p class="menu-heading">ANALYTICS</p>
+
+            <a href="reports.html" class="sidebar-direct-link">
+                <span>▥</span> Reports
+            </a>
+
+        </div>
+
+        <div class="sidebar-bottom">
+            <a href="#" class="logout-link" id="logoutButton">
+                <span>⇥</span> Log Out
+            </a>
+        </div>
+
+    </aside>
+
+    <!-- ORIGINAL MAIN CONTENT STRUCTURE -->
+    <main class="admin-main">
+
+        <header class="top-header">
+
+            <div class="header-school">
+                <h2>San Roque National High School</h2>
+                <p>Senior High School</p>
+            </div>
+
+            <div class="header-admin">
+                <div class="admin-avatar" id="adminAvatar">A</div>
+
+                <div>
+                    <strong id="adminName">Administrator</strong>
+                    <small>Administrator</small>
+                </div>
+            </div>
+
+        </header>
+
+        <section class="page-content">
+
+            <div class="students-heading">
+                <h1>Students Management</h1>
+                <p>
+                    Manage student records, student information,
+                    and library access status.
+                </p>
+            </div>
+
+            <div id="pageMessage" class="students-message"></div>
+
+            <!-- STATISTICS -->
+            <div class="students-stats">
+
+                <div class="student-stat-card">
+                    <span>Total Students</span>
+                    <strong id="totalCount">—</strong>
+                </div>
+
+                <div class="student-stat-card">
+                    <span>Active Students</span>
+                    <strong id="activeCount">—</strong>
+                </div>
+
+                <div class="student-stat-card">
+                    <span>Inactive Students</span>
+                    <strong id="inactiveCount">—</strong>
+                </div>
+
+            </div>
+
+            <!-- STUDENT RECORDS -->
+            <div class="students-panel">
+
+                <div class="students-panel-header">
+                    <div>
+                        <h2>Student Records</h2>
+                        <p>View, search, add, edit, and manage student information.</p>
+                    </div>
+
+                    <button type="button"
+                            class="student-action-button primary"
+                            id="addStudentButton">
+                        + ADD STUDENT
+                    </button>
+                </div>
+
+                <div class="students-toolbar">
+
+                    <input
+                        type="search"
+                        class="students-search"
+                        id="searchInput"
+                        placeholder="Search student number, name, grade, or section..."
+                        autocomplete="off"
+                    >
+
+                    <button type="button"
+                            class="student-action-button"
+                            id="refreshButton">
+                        ↻ REFRESH
+                    </button>
+
+                </div>
+
+                <div class="students-table-wrap">
+
+                    <table class="students-table">
+
+                        <thead>
+                            <tr>
+                                <th>Student Number</th>
+                                <th>Full Name</th>
+                                <th>Grade Level</th>
+                                <th>Section</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="studentsTable">
+
+                            <tr>
+                                <td colspan="6" class="table-empty">
+                                    Loading student records...
+                                </td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <footer class="admin-footer">
+            <p>
+                &copy; <span id="currentYear"></span>
+                SERVEWELL | San Roque National High School
+            </p>
+        </footer>
+
+    </main>
+
+</div>
+
+<!-- ADD / EDIT STUDENT MODAL -->
+<div class="student-modal-backdrop" id="studentModal" hidden>
+
+    <section class="student-modal">
+
+        <h2 id="modalTitle">Add Student</h2>
+
+        <p class="student-modal-description">
+            Enter the student's information below.
+        </p>
+
+        <div id="formMessage" class="student-modal-message"></div>
+
+        <form id="studentForm">
+
+            <input type="hidden" id="studentId">
+
+            <div class="student-form-grid">
+
+                <div class="student-form-group">
+                    <label for="studentNumber">Student Number</label>
+                    <input
+                        type="text"
+                        id="studentNumber"
+                        maxlength="100"
+                        required
+                    >
+                </div>
+
+                <div class="student-form-group">
+                    <label for="fullName">Full Name</label>
+                    <input
+                        type="text"
+                        id="fullName"
+                        maxlength="255"
+                        required
+                    >
+                </div>
+
+                <div class="student-form-group">
+                    <label for="gradeLevel">Grade Level</label>
+                    <select id="gradeLevel" required>
+                        <option value="">Select Grade Level</option>
+                        <option value="Grade 11">Grade 11</option>
+                        <option value="Grade 12">Grade 12</option>
+                    </select>
+                </div>
+
+                <div class="student-form-group">
+                    <label for="section">Section</label>
+                    <input
+                        type="text"
+                        id="section"
+                        maxlength="100"
+                        required
+                    >
+                </div>
+
+                <div class="student-form-group">
+                    <label for="status">Status</label>
+                    <select id="status" required>
+                        <option value="Active">Active</option>
+                        <option value="Inactive">Inactive</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="student-modal-actions">
+
+                <button type="button"
+                        class="student-action-button"
+                        id="cancelButton">
+                    CANCEL
+                </button>
+
+                <button type="submit"
+                        class="student-action-button primary"
+                        id="saveButton">
+                    SAVE STUDENT
+                </button>
+
+            </div>
+
+        </form>
+
+    </section>
+
+</div>
+
+<script>
+/* =========================================
+   SERVEWELL CONFIGURATION
+========================================= */
+
+const SUPABASE_URL =
+    "https://dagatdayniulxsecooae.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_s4Ei7Rka_ySw_arUK1I3sg_E6Pi4ehr";
+
+const STUDENTS_FUNCTION_URL =
+    SUPABASE_URL + "/functions/v1/servewell-students";
+
+/* =========================================
+   SESSION AND ADMIN INFORMATION
+   Same pattern as library_entry_scanner.html
+========================================= */
+
+const token = sessionStorage.getItem("servewell_token");
+
+let adminData = {};
+
+try {
+    adminData = JSON.parse(
+        sessionStorage.getItem("servewell_admin") || "{}"
+    );
+} catch (error) {
+    adminData = {};
+}
+
+if (!token) {
+    window.location.replace("index.html");
+}
+
+const adminDisplayName =
+    adminData.display_name ||
+    adminData.admin_name ||
+    adminData.full_name ||
+    adminData.username ||
+    "Administrator";
+
+document.getElementById("adminName").textContent = adminDisplayName;
+
+document.getElementById("adminAvatar").textContent =
+    adminDisplayName.charAt(0).toUpperCase();
+
+document.getElementById("currentYear").textContent =
+    new Date().getFullYear();
+
+/* =========================================
+   SIDEBAR DROPDOWN MENUS
+========================================= */
+
+document.querySelectorAll("[data-menu-toggle]").forEach(function(button) {
+
+    button.addEventListener("click", function() {
+
+        const menuId = this.getAttribute("data-menu-toggle");
+        const menu = document.getElementById(menuId);
+
+        if (!menu) return;
+
+        const isOpen =
+            this.getAttribute("aria-expanded") === "true";
+
+        this.setAttribute("aria-expanded", String(!isOpen));
+        menu.classList.toggle("open", !isOpen);
+
+    });
+
+});
+
+/* =========================================
+   LOGOUT
+========================================= */
+
+document.getElementById("logoutButton").addEventListener("click", function(event) {
+
+    event.preventDefault();
+
+    if (!confirm("Are you sure you want to log out?")) {
+        return;
+    }
+
+    sessionStorage.removeItem("servewell_token");
+    sessionStorage.removeItem("servewell_admin");
+
+    window.location.replace("index.html");
+
+});
+
+/* =========================================
+   ELEMENTS
+========================================= */
+
+const studentsTable = document.getElementById("studentsTable");
+const searchInput = document.getElementById("searchInput");
+
+const studentModal = document.getElementById("studentModal");
+const studentForm = document.getElementById("studentForm");
+
+const pageMessage = document.getElementById("pageMessage");
+const formMessage = document.getElementById("formMessage");
+
+let students = [];
+let searchTimer = null;
+
+/* =========================================
+   SAFE HTML OUTPUT
+========================================= */
+
+function escapeHTML(value) {
+
+    return String(value ?? "").replace(/[&<>"']/g, function(character) {
+
+        return {
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#039;"
+        }[character];
+
+    });
+
+}
+
+/* =========================================
+   MESSAGE DISPLAY
+========================================= */
+
+function showPageMessage(message, type = "info") {
+
+    pageMessage.textContent = message;
+    pageMessage.className = "students-message " + type;
+
+}
+
+function clearPageMessage() {
+
+    pageMessage.textContent = "";
+    pageMessage.className = "students-message";
+
+}
+
+function showFormMessage(message, type = "error") {
+
+    formMessage.textContent = message;
+    formMessage.className = "student-modal-message " + type;
+
+}
+
+function clearFormMessage() {
+
+    formMessage.textContent = "";
+    formMessage.className = "student-modal-message";
+
+}
+
+/* =========================================
+   SUPABASE EDGE FUNCTION REQUEST
+   Same headers as the working entry scanner.
+========================================= */
+
+async function callStudentsFunction(action, payload = {}) {
+
+    const response = await fetch(STUDENTS_FUNCTION_URL, {
+
+        method: "POST",
+
+        headers: {
+            "Content-Type": "application/json",
+            "apikey": SUPABASE_PUBLISHABLE_KEY,
+            "Authorization": "Bearer " + token
+        },
+
+        body: JSON.stringify({
+            action: action,
+            ...payload
+        })
+
+    });
+
+    let result;
+
+    try {
+
+        result = await response.json();
+
+    } catch (error) {
+
+        throw new Error(
+            "The server returned an invalid response. HTTP " +
+            response.status
+        );
+
+    }
+
+    if (!response.ok || result.success === false) {
+
+        throw new Error(
+            result.message ||
+            result.error ||
+            ("Request failed. HTTP " + response.status)
+        );
+
+    }
+
+    return result;
+
+}
+
+/* =========================================
+   LOAD STUDENTS
+========================================= */
+
+async function loadStudents(search = "") {
+
+    studentsTable.innerHTML = `
+        <tr>
+            <td colspan="6" class="table-empty">
+                Loading student records...
+            </td>
+        </tr>
+    `;
+
+    try {
+
+        const result = await callStudentsFunction(
+            "list_students",
+            { search: search }
+        );
+
+        students = Array.isArray(result.students)
+            ? result.students
+            : [];
+
+        const statistics = result.statistics || {};
+
+        document.getElementById("totalCount").textContent =
+            statistics.total ?? students.length;
+
+        document.getElementById("activeCount").textContent =
+            statistics.active ??
+            students.filter(student => student.status === "Active").length;
+
+        document.getElementById("inactiveCount").textContent =
+            statistics.inactive ??
+            students.filter(student => student.status === "Inactive").length;
+
+        renderStudents();
+
+        clearPageMessage();
+
+    } catch (error) {
+
+        console.error("Students loading error:", error);
+
+        studentsTable.innerHTML = `
+            <tr>
+                <td colspan="6" class="table-empty">
+                    Unable to load student records.<br>
+                    ${escapeHTML(error.message)}
+                </td>
+            </tr>
+        `;
+
+        showPageMessage(
+            "Student records could not be loaded: " + error.message,
+            "error"
+        );
+
+    }
+
+}
+
+/* =========================================
+   DISPLAY STUDENT RECORDS
+========================================= */
+
+function renderStudents() {
+
+    if (!students.length) {
+
+        studentsTable.innerHTML = `
+            <tr>
+                <td colspan="6" class="table-empty">
+                    No student records found.
+                </td>
+            </tr>
+        `;
+
+        return;
+
+    }
+
+    studentsTable.innerHTML = students.map(function(student) {
+
+        const id = Number(student.id);
+
+        const status = String(student.status || "Inactive");
+
+        const statusClass =
+            status.toLowerCase() === "active"
+                ? "active"
+                : "inactive";
+
+        return `
+            <tr>
+                <td>${escapeHTML(student.student_number)}</td>
+
+                <td>
+                    <strong>${escapeHTML(student.full_name)}</strong>
+                </td>
+
+                <td>${escapeHTML(student.grade_level)}</td>
+
+                <td>${escapeHTML(student.section)}</td>
+
+                <td>
+                    <span class="student-status ${statusClass}">
+                        ${escapeHTML(status)}
+                    </span>
+                </td>
+
+                <td>
+                    <div class="table-actions">
+
+                        <button
+                            type="button"
+                            class="table-action edit"
+                            data-action="edit"
+                            data-id="${id}">
+                            EDIT
+                        </button>
+
+                        <button
+                            type="button"
+                            class="table-action delete"
+                            data-action="delete"
+                            data-id="${id}">
+                            DELETE
+                        </button>
+
+                    </div>
+                </td>
+            </tr>
+        `;
+
+    }).join("");
+
+}
+
+/* =========================================
+   OPEN AND CLOSE STUDENT FORM
+========================================= */
+
+function openStudentModal(student = null) {
+
+    studentForm.reset();
+    clearFormMessage();
+
+    document.getElementById("studentId").value =
+        student ? student.id : "";
+
+    document.getElementById("modalTitle").textContent =
+        student ? "Edit Student" : "Add Student";
+
+    document.getElementById("saveButton").textContent =
+        student ? "UPDATE STUDENT" : "SAVE STUDENT";
+
+    if (student) {
+
+        document.getElementById("studentNumber").value =
+            student.student_number || "";
+
+        document.getElementById("fullName").value =
+            student.full_name || "";
+
+        document.getElementById("gradeLevel").value =
+            student.grade_level || "";
+
+        document.getElementById("section").value =
+            student.section || "";
+
+        document.getElementById("status").value =
+            student.status || "Active";
+
+    }
+
+    studentModal.hidden = false;
+
+}
+
+function closeStudentModal() {
+
+    studentModal.hidden = true;
+
+    studentForm.reset();
+    clearFormMessage();
+
+}
+
+document.getElementById("addStudentButton").addEventListener("click", function() {
+
+    openStudentModal();
+
+});
+
+document.getElementById("cancelButton").addEventListener("click", function() {
+
+    closeStudentModal();
+
+});
+
+studentModal.addEventListener("click", function(event) {
+
+    if (event.target === studentModal) {
+        closeStudentModal();
+    }
+
+});
+
+/* =========================================
+   EDIT AND DELETE ACTIONS
+========================================= */
+
+studentsTable.addEventListener("click", async function(event) {
+
+    const button = event.target.closest("button[data-action]");
+
+    if (!button) return;
+
+    const action = button.dataset.action;
+    const id = Number(button.dataset.id);
+
+    const student = students.find(function(item) {
+        return Number(item.id) === id;
+    });
+
+    if (!student) return;
+
+    if (action === "edit") {
+
+        openStudentModal(student);
+
+        return;
+
+    }
+
+    if (action === "delete") {
+
+        const confirmed = confirm(
+            "Are you sure you want to delete the student record of " +
+            student.full_name + "?"
+        );
+
+        if (!confirmed) return;
+
+        button.disabled = true;
+        button.textContent = "DELETING...";
+
+        try {
+
+            const result = await callStudentsFunction(
+                "delete_student",
+                { id: id }
+            );
+
+            showPageMessage(
+                result.message || "Student record deleted successfully.",
+                "success"
+            );
+
+            await loadStudents(searchInput.value.trim());
+
+        } catch (error) {
+
+            console.error("Student deletion error:", error);
+
+            showPageMessage(
+                error.message,
+                "error"
+            );
+
+            button.disabled = false;
+            button.textContent = "DELETE";
+
+        }
+
+    }
+
+});
+
+/* =========================================
+   ADD AND UPDATE STUDENT
+========================================= */
+
+studentForm.addEventListener("submit", async function(event) {
+
+    event.preventDefault();
+
+    const studentId =
+        document.getElementById("studentId").value;
+
+    const student = {
+
+        student_number:
+            document.getElementById("studentNumber").value.trim(),
+
+        full_name:
+            document.getElementById("fullName").value.trim(),
+
+        grade_level:
+            document.getElementById("gradeLevel").value,
+
+        section:
+            document.getElementById("section").value.trim(),
+
+        status:
+            document.getElementById("status").value
+
+    };
+
+    if (
+        !student.student_number ||
+        !student.full_name ||
+        !student.grade_level ||
+        !student.section
+    ) {
+
+        showFormMessage("Please complete all required fields.");
+
+        return;
+
+    }
+
+    const saveButton = document.getElementById("saveButton");
+
+    saveButton.disabled = true;
+    saveButton.textContent = "SAVING...";
+
+    try {
+
+        let result;
+
+        if (studentId) {
+
+            result = await callStudentsFunction(
+                "update_student",
+                {
+                    id: Number(studentId),
+                    student: student
+                }
+            );
+
+        } else {
+
+            result = await callStudentsFunction(
+                "add_student",
+                {
+                    student: student
+                }
+            );
+
+        }
+
+        closeStudentModal();
+
+        showPageMessage(
+            result.message ||
+            (studentId
+                ? "Student record updated successfully."
+                : "Student added successfully."),
+            "success"
+        );
+
+        await loadStudents(searchInput.value.trim());
+
+    } catch (error) {
+
+        console.error("Student save error:", error);
+
+        showFormMessage(error.message, "error");
+
+    } finally {
+
+        saveButton.disabled = false;
+
+        saveButton.textContent =
+            studentId ? "UPDATE STUDENT" : "SAVE STUDENT";
+
+    }
+
+});
+
+/* =========================================
+   SEARCH
+========================================= */
+
+searchInput.addEventListener("input", function() {
+
+    clearTimeout(searchTimer);
+
+    searchTimer = setTimeout(function() {
+
+        loadStudents(searchInput.value.trim());
+
+    }, 350);
+
+});
+
+/* =========================================
+   REFRESH
+========================================= */
+
+document.getElementById("refreshButton").addEventListener("click", function() {
+
+    loadStudents(searchInput.value.trim());
+
+});
+
+/* =========================================
+   INITIALIZE
+========================================= */
+
+loadStudents();
+
+</script>
+
+</body>
+</html>

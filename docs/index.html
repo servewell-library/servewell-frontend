@@ -557,14 +557,7 @@ loginForm.addEventListener('submit', async function(event) {
             JSON.stringify(result.admin)
         );
 
-        // Temporary destination until the scanner center is converted.
-        showError('Login successful. Scanner Center is still being prepared.');
-
-        errorMessage.style.background = '#edf7f0';
-        errorMessage.style.borderLeftColor = '#3b8b58';
-        errorMessage.style.color = '#28633d';
-
-        loginButton.textContent = 'SIGNED IN';
+window.location.href = 'scanner_center.html';
 
     } catch (error) {
         showError(

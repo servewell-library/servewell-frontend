@@ -1,0 +1,524 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | SERVEWELL</title>
+
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/glass_theme.css">
+
+    <style>
+        .sidebar-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .sidebar-group-button {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 15px;
+            border: none;
+            border-radius: 10px;
+            background: transparent;
+            color: inherit;
+            font: inherit;
+            text-align: left;
+            cursor: pointer;
+        }
+
+        .sidebar-group-button:hover,
+        .sidebar-group-button.open {
+            background: rgba(255,255,255,.10);
+        }
+
+        .group-arrow {
+            transition: transform .2s ease;
+        }
+
+        .sidebar-group-button.open .group-arrow {
+            transform: rotate(180deg);
+        }
+
+        .sidebar-submenu {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            padding: 5px 0 5px 13px;
+        }
+
+        .sidebar-submenu.open {
+            display: flex;
+        }
+
+        .sidebar-submenu a,
+        .sidebar-direct-link {
+            display: block;
+            padding: 10px 14px;
+            border-radius: 9px;
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .sidebar-submenu a:hover,
+        .sidebar-direct-link:hover,
+        .sidebar-direct-link.active {
+            background: rgba(255,255,255,.12);
+        }
+
+        .sidebar-section-label {
+            padding: 15px 13px 5px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            opacity: .65;
+        }
+
+        .dashboard-loading {
+            opacity: .65;
+        }
+
+        .dashboard-error {
+            margin: 15px 0;
+            padding: 12px 15px;
+            border-radius: 10px;
+            background: rgba(220, 53, 69, .12);
+            color: #ffb7bd;
+            display: none;
+        }
+
+        .overview-item {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .overview-item p {
+            line-height: 1.6;
+        }
+
+        .dashboard-top-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .scanner-shortcut {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 15px;
+            border-radius: 9px;
+            background: rgba(255,255,255,.12);
+            color: inherit;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .scanner-shortcut:hover {
+            background: rgba(255,255,255,.2);
+        }
+
+        @media(max-width: 600px) {
+            .dashboard-top-actions {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+
+<body class="admin-page">
+
+<div class="admin-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="sidebar-brand">
+            <img src="assets/images/school_logo.jfif"
+                 alt="School Logo"
+                 onerror="this.style.display='none'">
+
+            <div>
+                <h2>SERVE WELL</h2>
+                <p>Library Management</p>
+            </div>
+        </div>
+
+        <nav class="sidebar-menu">
+
+            <div class="sidebar-section-label">MAIN MENU</div>
+
+            <a href="dashboard.html"
+               class="sidebar-direct-link active">
+                Dashboard
+            </a>
+
+            <a href="scanner_center.html"
+               class="sidebar-direct-link">
+                Scanner Center
+            </a>
+
+            <div class="sidebar-section-label">LIBRARY MANAGEMENT</div>
+
+            <button class="sidebar-group-button"
+                    type="button"
+                    data-menu-toggle="librarySubmenu">
+                <span>Library Management</span>
+                <span class="group-arrow">⌄</span>
+            </button>
+
+            <div class="sidebar-submenu" id="librarySubmenu">
+                <a href="students.html">Students</a>
+                <a href="teachers.html">Teachers</a>
+                <a href="#" data-unavailable>Special Visitors</a>
+                <a href="#" data-unavailable>Book Inventory</a>
+                <a href="#" data-unavailable>Borrowing Records</a>
+                <a href="#" data-unavailable>Return Books</a>
+            </div>
+
+            <div class="sidebar-section-label">PRINTABLES & QR CODES</div>
+
+            <button class="sidebar-group-button"
+                    type="button"
+                    data-menu-toggle="printablesSubmenu">
+                <span>Printables & QR Codes</span>
+                <span class="group-arrow">⌄</span>
+            </button>
+
+            <div class="sidebar-submenu" id="printablesSubmenu">
+                <a href="#" data-unavailable>Student QR Cards</a>
+                <a href="#" data-unavailable>Teacher QR Cards</a>
+                <a href="#" data-unavailable>Book QR Codes</a>
+                <a href="#" data-unavailable>Printable Visitor IDs</a>
+            </div>
+
+            <div class="sidebar-section-label">LIBRARY ACTIVITY</div>
+
+            <button class="sidebar-group-button"
+                    type="button"
+                    data-menu-toggle="activitySubmenu">
+                <span>Library Activity</span>
+                <span class="group-arrow">⌄</span>
+            </button>
+
+            <div class="sidebar-submenu" id="activitySubmenu">
+                <a href="#" data-unavailable>Library Entry Logs</a>
+                <a href="#" data-unavailable>Visitor Logs</a>
+            </div>
+
+            <div class="sidebar-section-label">REPORTS</div>
+
+            <a href="#" class="sidebar-direct-link" data-unavailable>
+                Analytics Reports
+            </a>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+            <a href="#" class="sidebar-direct-link" id="logoutButton">
+                Sign Out
+            </a>
+        </div>
+
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="admin-main">
+
+        <header class="top-header">
+
+            <div class="header-school">
+                <strong>San Roque National High School</strong>
+                <span>Senior High School</span>
+            </div>
+
+            <div class="header-admin">
+                <div class="admin-avatar" id="adminAvatar">L</div>
+                <div>
+                    <strong id="adminName">Librarian</strong>
+                    <span>Administrator</span>
+                </div>
+            </div>
+
+        </header>
+
+        <section class="page-content">
+
+            <div class="page-heading">
+                <div>
+                    <h1>Dashboard</h1>
+                    <p>Welcome to the SERVEWELL Library Management System.</p>
+                </div>
+
+                <div class="dashboard-top-actions">
+                    <a href="scanner_center.html" class="scanner-shortcut">
+                        SCANNER CENTER →
+                    </a>
+                    <div class="dashboard-date" id="dashboardDate"></div>
+                </div>
+            </div>
+
+            <div class="dashboard-error" id="dashboardError">
+                Unable to load dashboard statistics. Please refresh the page.
+            </div>
+
+            <div class="dashboard-grid">
+
+                <div class="stat-card">
+                    <div class="stat-icon">♙</div>
+                    <div>
+                        <p>Total Students</p>
+                        <h2 id="totalStudents" class="dashboard-loading">—</h2>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">▤</div>
+                    <div>
+                        <p>Book Titles</p>
+                        <h2 id="totalTitles" class="dashboard-loading">—</h2>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">▣</div>
+                    <div>
+                        <p>Total Book Copies</p>
+                        <h2 id="totalCopies" class="dashboard-loading">—</h2>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">✓</div>
+                    <div>
+                        <p>Available Copies</p>
+                        <h2 id="availableCopies" class="dashboard-loading">—</h2>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">⇄</div>
+                    <div>
+                        <p>Active Borrowings</p>
+                        <h2 id="activeBorrowings" class="dashboard-loading">—</h2>
+                    </div>
+                </div>
+
+                <div class="stat-card overdue-card">
+                    <div class="stat-icon">!</div>
+                    <div>
+                        <p>Overdue Transactions</p>
+                        <h2 id="overdueBooks" class="dashboard-loading">—</h2>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="overview-card">
+
+                <div class="overview-header">
+                    <div>
+                        <h2>System Overview</h2>
+                        <p>Library management at a glance.</p>
+                    </div>
+                </div>
+
+                <div class="overview-content">
+
+                    <a href="students.html" class="overview-item">
+                        <h3>Student Management</h3>
+                        <p>
+                            Manage student information and connect student
+                            identification codes from the interconnected
+                            research system.
+                        </p>
+                    </a>
+
+                    <div class="overview-item">
+                        <h3>Book Management</h3>
+                        <p>
+                            Organize library book records, inventory,
+                            availability, and physical condition.
+                        </p>
+                    </div>
+
+                    <div class="overview-item">
+                        <h3>Borrowing and Returns</h3>
+                        <p>
+                            Monitor borrowing transactions, due dates,
+                            and returned books.
+                        </p>
+                    </div>
+
+                    <div class="overview-item">
+                        <h3>Reports</h3>
+                        <p>
+                            View and prepare library records and
+                            inventory reports.
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+<script>
+const SUPABASE_URL =
+    'https://dagatdayniulxsecooae.supabase.co';
+
+const SUPABASE_ANON_KEY =
+    'sb_publishable_s4Ei7Rka_ySw_arUK1I3sg_E6Pi4ehr';
+
+// Check existing login session
+const token = sessionStorage.getItem('servewell_token');
+const savedAdmin = sessionStorage.getItem('servewell_admin');
+
+if (!token || !savedAdmin) {
+    window.location.replace('index.html');
+}
+
+let admin = {};
+
+try {
+    admin = JSON.parse(savedAdmin);
+
+    if (!admin || typeof admin !== 'object') {
+        throw new Error('Invalid administrator session.');
+    }
+
+    const adminName =
+        admin.full_name ||
+        admin.username ||
+        'Librarian';
+
+    document.getElementById('adminName').textContent = adminName;
+    document.getElementById('adminAvatar').textContent =
+        adminName.charAt(0).toUpperCase();
+
+} catch (error) {
+    sessionStorage.removeItem('servewell_token');
+    sessionStorage.removeItem('servewell_admin');
+    window.location.replace('index.html');
+}
+
+// Current date
+document.getElementById('dashboardDate').textContent =
+    new Date().toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: '2-digit'
+    });
+
+// Sidebar expandable menus
+document.querySelectorAll('[data-menu-toggle]').forEach(button => {
+    button.addEventListener('click', () => {
+        const submenu = document.getElementById(
+            button.dataset.menuToggle
+        );
+
+        button.classList.toggle('open');
+        submenu.classList.toggle('open');
+    });
+});
+
+// Not-yet-available menu pages
+document.querySelectorAll('[data-unavailable]').forEach(link => {
+    link.addEventListener('click', event => {
+        event.preventDefault();
+        alert('This module is not yet available in the current online version.');
+    });
+});
+
+// Logout
+document.getElementById('logoutButton').addEventListener('click', event => {
+    event.preventDefault();
+
+    if (confirm('Are you sure you want to sign out?')) {
+        sessionStorage.removeItem('servewell_token');
+        sessionStorage.removeItem('servewell_admin');
+        window.location.replace('index.html');
+    }
+});
+
+// Load live dashboard statistics
+async function loadDashboardStatistics() {
+    const errorBox = document.getElementById('dashboardError');
+
+    try {
+        const response = await fetch(
+            `${SUPABASE_URL}/functions/v1/servewell-dashboard`,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                    'apikey': SUPABASE_ANON_KEY
+                },
+                body: JSON.stringify({})
+            }
+        );
+
+        const result = await response.json();
+
+        if (!response.ok || !result.success) {
+            throw new Error(
+                result.message || 'Dashboard statistics request failed.'
+            );
+        }
+
+        const stats = result.statistics;
+
+        const fields = {
+            totalStudents: stats.totalStudents,
+            totalTitles: stats.totalTitles,
+            totalCopies: stats.totalCopies,
+            availableCopies: stats.availableCopies,
+            activeBorrowings: stats.activeBorrowings,
+            overdueBooks: stats.overdueBooks
+        };
+
+        Object.entries(fields).forEach(([id, value]) => {
+            const element = document.getElementById(id);
+
+            element.textContent = Number(value || 0).toLocaleString();
+            element.classList.remove('dashboard-loading');
+        });
+
+        errorBox.style.display = 'none';
+
+    } catch (error) {
+        console.error('Dashboard statistics error:', error);
+
+        errorBox.style.display = 'block';
+
+        [
+            'totalStudents',
+            'totalTitles',
+            'totalCopies',
+            'availableCopies',
+            'activeBorrowings',
+            'overdueBooks'
+        ].forEach(id => {
+            document.getElementById(id).textContent = '—';
+            document.getElementById(id).classList.remove('dashboard-loading');
+        });
+    }
+}
+
+if (token && savedAdmin) {
+    loadDashboardStatistics();
+}
+</script>
+
+</body>
+</html>

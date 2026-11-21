@@ -1,0 +1,1440 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Entry Scanner | SERVEWELL</title>
+
+    <!-- ORIGINAL SERVEWELL CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/glass_theme.css">
+
+    <style>
+        /* ORIGINAL HEADER SIDEBAR DROPDOWNS */
+        .sidebar-menu {
+            overflow-y: auto;
+        }
+
+        .sidebar-group-button {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 14px;
+            margin-top: 8px;
+            border: none;
+            background: transparent;
+            color: inherit;
+            font: inherit;
+            font-size: 12px;
+            font-weight: 700;
+            text-align: left;
+            cursor: pointer;
+            letter-spacing: .5px;
+        }
+
+        .sidebar-group-button:hover {
+            background: rgba(255,255,255,.08);
+        }
+
+        .sidebar-group-button .group-arrow {
+            transition: transform .2s ease;
+        }
+
+        .sidebar-group-button[aria-expanded="true"] .group-arrow {
+            transform: rotate(90deg);
+        }
+
+        .sidebar-submenu {
+            display: none;
+            padding-left: 8px;
+        }
+
+        .sidebar-submenu.open {
+            display: block;
+        }
+
+        .sidebar-submenu a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 11px 14px;
+            margin: 3px 0;
+            text-decoration: none;
+        }
+
+        .sidebar-submenu a span {
+            min-width: 18px;
+        }
+
+        .sidebar-direct-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 14px;
+            text-decoration: none;
+        }
+
+        /* LIBRARY ENTRY SCANNER CONTENT */
+        .entry-scanner-heading {
+            margin-bottom: 25px;
+        }
+
+        .entry-scanner-heading h1 {
+            color: #ffffff;
+            font-size: 27px;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 8px rgba(0,0,0,.2);
+        }
+
+        .entry-scanner-heading p {
+            color: #d0deec;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .entry-scanner-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr);
+            gap: 22px;
+            align-items: stretch;
+        }
+
+        .entry-glass-card {
+            background: linear-gradient(
+                135deg,
+                rgba(255,255,255,.13),
+                rgba(255,255,255,.045)
+            );
+            border: 1px solid rgba(255,255,255,.17);
+            border-radius: 16px;
+            padding: 24px;
+            color: #ffffff;
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            box-shadow: 0 10px 30px rgba(0,0,0,.13);
+            min-width: 0;
+        }
+
+        .entry-card-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 7px;
+        }
+
+        .entry-card-description {
+            color: #bdcce2;
+            font-size: 12px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        #reader {
+            width: 100%;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,.20);
+            border-radius: 12px;
+            background: rgba(3,15,32,.55);
+        }
+
+        #reader video {
+            border-radius: 10px;
+            object-fit: cover;
+        }
+
+        #reader img {
+            max-width: 100%;
+        }
+
+        #reader__dashboard_section_csr button {
+            background: linear-gradient(115deg,#287fe0,#625de0);
+            color: #ffffff;
+            border: 0;
+            border-radius: 7px;
+            padding: 9px 13px;
+            margin: 5px;
+            cursor: pointer;
+        }
+
+        .scanner-status {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding: 12px 14px;
+            margin-top: 16px;
+            border-radius: 9px;
+            background: rgba(255,255,255,.08);
+            border: 1px solid rgba(255,255,255,.13);
+            color: #dceaff;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .status-dot {
+            width: 9px;
+            height: 9px;
+            flex: 0 0 9px;
+            border-radius: 50%;
+            background: #f0bd58;
+            box-shadow: 0 0 10px rgba(240,189,88,.5);
+        }
+
+        .status-dot.ready {
+            background: #48d597;
+            box-shadow: 0 0 10px rgba(72,213,151,.5);
+        }
+
+        .status-dot.error {
+            background: #ff6b78;
+            box-shadow: 0 0 10px rgba(255,107,120,.5);
+        }
+
+        .scanner-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .scanner-button {
+            border: 1px solid rgba(255,255,255,.18);
+            border-radius: 9px;
+            padding: 11px 17px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            color: #ffffff;
+            background: rgba(255,255,255,.10);
+        }
+
+        .scanner-button.primary {
+            background: linear-gradient(115deg,#287fe0,#625de0);
+        }
+
+        .scanner-button:hover {
+            filter: brightness(1.12);
+        }
+
+        .scanner-button:disabled {
+            opacity: .45;
+            cursor: not-allowed;
+        }
+
+        .sound-control {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 17px;
+            color: #c7d8ed;
+            font-size: 12px;
+        }
+
+        .sound-control input {
+            accent-color: #55a9ff;
+        }
+
+        .person-panel {
+            min-height: 360px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .person-empty {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 30px 15px;
+            color: #bdcce2;
+        }
+
+        .person-empty-icon {
+            width: 76px;
+            height: 76px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 17px;
+            font-size: 34px;
+            color: #dceaff;
+            background: rgba(255,255,255,.09);
+            border: 1px solid rgba(255,255,255,.15);
+        }
+
+        .person-empty h3 {
+            color: #ffffff;
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        .person-empty p {
+            max-width: 280px;
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        .person-result {
+            display: none;
+            text-align: center;
+        }
+
+        .person-result.visible {
+            display: block;
+        }
+
+        .person-photo {
+            width: 112px;
+            height: 112px;
+            border-radius: 50%;
+            margin: 7px auto 17px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: linear-gradient(135deg,#287fe0,#625de0);
+            border: 3px solid rgba(255,255,255,.30);
+            box-shadow: 0 0 25px rgba(69,155,255,.22);
+            color: #ffffff;
+            font-size: 37px;
+            font-weight: 700;
+        }
+
+        .person-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .person-type {
+            display: inline-block;
+            padding: 6px 13px;
+            border-radius: 30px;
+            background: rgba(75,156,255,.17);
+            border: 1px solid rgba(130,190,255,.25);
+            color: #dceaff;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .person-name {
+            color: #ffffff;
+            font-size: 21px;
+            line-height: 1.4;
+            margin-bottom: 18px;
+            overflow-wrap: anywhere;
+        }
+
+        .person-details {
+            text-align: left;
+            border: 1px solid rgba(255,255,255,.13);
+            border-radius: 10px;
+            overflow: hidden;
+            background: rgba(5,23,48,.22);
+        }
+
+        .person-detail-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 12px 14px;
+            border-bottom: 1px solid rgba(255,255,255,.09);
+            font-size: 12px;
+        }
+
+        .person-detail-row:last-child {
+            border-bottom: 0;
+        }
+
+        .person-detail-label {
+            color: #a8bad1;
+            flex: 0 0 auto;
+        }
+
+        .person-detail-value {
+            color: #ffffff;
+            font-weight: 600;
+            text-align: right;
+            overflow-wrap: anywhere;
+        }
+
+        .entry-confirm-area {
+            margin-top: 20px;
+            display: none;
+            gap: 10px;
+        }
+
+        .entry-confirm-area.visible {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .entry-confirm-area button {
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .entry-message {
+            display: none;
+            padding: 12px 14px;
+            border-radius: 9px;
+            margin-top: 15px;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .entry-message.success {
+            display: block;
+            color: #baf5d9;
+            background: rgba(28,150,98,.15);
+            border: 1px solid rgba(83,220,158,.25);
+        }
+
+        .entry-message.error {
+            display: block;
+            color: #ffd0d4;
+            background: rgba(190,65,75,.16);
+            border: 1px solid rgba(255,130,140,.25);
+        }
+
+        .entry-message.info {
+            display: block;
+            color: #d7eaff;
+            background: rgba(55,130,220,.15);
+            border: 1px solid rgba(125,185,255,.22);
+        }
+
+        .entry-instructions {
+            margin-top: 22px;
+            padding: 15px 17px;
+            border-radius: 10px;
+            background: rgba(255,255,255,.065);
+            border: 1px solid rgba(255,255,255,.11);
+        }
+
+        .entry-instructions h3 {
+            color: #ffffff;
+            font-size: 13px;
+            margin-bottom: 9px;
+        }
+
+        .entry-instructions p {
+            color: #bdcce2;
+            font-size: 11px;
+            line-height: 1.8;
+        }
+
+        .entry-instructions strong {
+            color: #ffffff;
+        }
+
+        .admin-footer {
+            margin-top: 0;
+        }
+
+        @media (max-width: 950px) {
+            .entry-scanner-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .person-panel {
+                min-height: 320px;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .entry-glass-card {
+                padding: 17px;
+            }
+
+            .entry-scanner-heading h1 {
+                font-size: 22px;
+            }
+
+            .person-name {
+                font-size: 18px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: .01ms !important;
+                transition-duration: .01ms !important;
+            }
+        }
+    </style>
+
+    <script src="https://unpkg.com/html5-qrcode"></script>
+</head>
+
+<body class="admin-page">
+
+<div class="admin-layout">
+
+    <!-- ORIGINAL SERVEWELL SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="sidebar-brand">
+            <img src="assets/images/school_logo.jfif" alt="School Logo">
+            <div>
+                <h2>SERVEWELL</h2>
+                <p>Library Management</p>
+            </div>
+        </div>
+
+        <div class="sidebar-menu">
+
+            <p class="menu-heading">MAIN MENU</p>
+
+            <a href="dashboard.html"
+               class="sidebar-direct-link">
+                <span>▦</span> Dashboard
+            </a>
+
+            <a href="scanner_center.html"
+               class="sidebar-direct-link">
+                <span>⌕</span> Scanner Center
+            </a>
+
+            <button type="button"
+                    class="sidebar-group-button"
+                    data-menu-toggle="library-menu"
+                    aria-expanded="false">
+                <span>LIBRARY MANAGEMENT</span>
+                <span class="group-arrow">›</span>
+            </button>
+
+            <div id="library-menu" class="sidebar-submenu">
+
+                <a href="students.html"><span>♙</span> Students</a>
+                <a href="teachers.html"><span>♙</span> Teachers</a>
+                <a href="special_visitors.html"><span>♧</span> Special Visitors</a>
+                <a href="books.html"><span>▤</span> Book Inventory</a>
+                <a href="borrowing.html"><span>⇄</span> Borrowing Records</a>
+                <a href="returns.html"><span>↩</span> Return Books</a>
+
+            </div>
+
+            <button type="button"
+                    class="sidebar-group-button"
+                    data-menu-toggle="printable-menu"
+                    aria-expanded="false">
+                <span>PRINTABLES &amp; QR CODES</span>
+                <span class="group-arrow">›</span>
+            </button>
+
+            <div id="printable-menu" class="sidebar-submenu">
+
+                <a href="student_qr.html"><span>▣</span> Student QR Cards</a>
+                <a href="teacher_qr.html"><span>▣</span> Teacher QR Cards</a>
+                <a href="book_qr.html"><span>▣</span> Book QR Codes</a>
+                <a href="visitor_id.html"><span>▤</span> Printable Visitor IDs</a>
+
+            </div>
+
+            <button type="button"
+                    class="sidebar-group-button"
+                    data-menu-toggle="activity-menu"
+                    aria-expanded="true">
+                <span>LIBRARY ACTIVITY</span>
+                <span class="group-arrow">›</span>
+            </button>
+
+            <div id="activity-menu" class="sidebar-submenu open">
+
+                <a href="library_entry_logs.html" class="active">
+                    <span>◷</span> Library Entry Logs
+                </a>
+
+                <a href="visitor_logs.html">
+                    <span>◷</span> Visitor Logs
+                </a>
+
+            </div>
+
+            <p class="menu-heading">ANALYTICS</p>
+
+            <a href="reports.html" class="sidebar-direct-link">
+                <span>▥</span> Reports
+            </a>
+
+        </div>
+
+        <div class="sidebar-bottom">
+            <a href="#" class="logout-link" id="logoutButton">
+                <span>⇥</span> Log Out
+            </a>
+        </div>
+
+    </aside>
+
+    <!-- ORIGINAL MAIN CONTENT STRUCTURE -->
+    <main class="admin-main">
+
+        <header class="top-header">
+
+            <div class="header-school">
+                <h2>San Roque National High School</h2>
+                <p>Senior High School</p>
+            </div>
+
+            <div class="header-admin">
+
+                <div class="admin-avatar" id="adminAvatar">A</div>
+
+                <div>
+                    <strong id="adminName">Administrator</strong>
+                    <small>Administrator</small>
+                </div>
+
+            </div>
+
+        </header>
+
+        <section class="page-content">
+
+            <div class="entry-scanner-heading">
+                <h1>Library Entry Scanner</h1>
+                <p>
+                    Scan the official student or teacher QR code to record
+                    their entry into the school library.
+                </p>
+            </div>
+
+            <div class="entry-scanner-grid">
+
+                <!-- CAMERA SCANNER -->
+                <div class="entry-glass-card">
+
+                    <h2 class="entry-card-title">QR Code Scanner</h2>
+
+                    <p class="entry-card-description">
+                        Position the student or teacher QR code in front
+                        of the camera.
+                    </p>
+
+                    <div id="reader"></div>
+
+                    <div class="scanner-status">
+                        <span class="status-dot" id="statusDot"></span>
+                        <span id="scannerStatus">
+                            Scanner is ready. Start the camera to begin.
+                        </span>
+                    </div>
+
+                    <div class="scanner-controls">
+
+                        <button type="button"
+                                class="scanner-button primary"
+                                id="startCameraButton">
+                            Start Camera
+                        </button>
+
+                        <button type="button"
+                                class="scanner-button"
+                                id="stopCameraButton"
+                                disabled>
+                            Stop Camera
+                        </button>
+
+                    </div>
+
+                    <label class="sound-control">
+                        <input type="checkbox" id="soundToggle" checked>
+                        Enable voice and sound notifications
+                    </label>
+
+                    <div class="entry-instructions">
+                        <h3>Scanning Instructions</h3>
+                        <p>
+                            1. Click <strong>Start Camera</strong>.<br>
+                            2. Present the student's or teacher's QR card.<br>
+                            3. Verify the displayed person's information.<br>
+                            4. Click <strong>Confirm Library Entry</strong> to save the record.
+                        </p>
+                    </div>
+
+                </div>
+
+                <!-- PERSON INFORMATION -->
+                <div class="entry-glass-card person-panel">
+
+                    <h2 class="entry-card-title">Scanned Person</h2>
+
+                    <p class="entry-card-description">
+                        The scanned person's information will appear here.
+                    </p>
+
+                    <div class="person-empty" id="personEmpty">
+
+                        <div class="person-empty-icon">♙</div>
+
+                        <h3>Waiting for QR Scan</h3>
+
+                        <p>
+                            Scan a valid student or teacher QR code to
+                            display their information.
+                        </p>
+
+                    </div>
+
+                    <div class="person-result" id="personResult">
+
+                        <div class="person-photo" id="personPhoto">?</div>
+
+                        <div class="person-type" id="personType">
+                            STUDENT
+                        </div>
+
+                        <h2 class="person-name" id="personFullName">
+                            Person Name
+                        </h2>
+
+                        <div class="person-details" id="personDetails"></div>
+
+                    </div>
+
+                    <div class="entry-message" id="entryMessage"></div>
+
+                    <div class="entry-confirm-area" id="entryConfirmArea">
+
+                        <button type="button"
+                                class="scanner-button primary"
+                                id="confirmEntryButton">
+                            Confirm Library Entry
+                        </button>
+
+                        <button type="button"
+                                class="scanner-button"
+                                id="cancelScanButton">
+                            Cancel Scan
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <footer class="admin-footer">
+            <p>
+                &copy; <span id="currentYear"></span>
+                SERVEWELL | San Roque National High School
+            </p>
+        </footer>
+
+    </main>
+
+</div>
+
+<script>
+/* =========================================
+   SERVEWELL CONFIGURATION
+========================================= */
+
+const SUPABASE_URL = "https://dagatdayniulxsecooae.supabase.co";
+
+/*
+   Paste your existing SUPABASE PUBLISHABLE KEY below.
+   Do NOT use the service role key here.
+*/
+const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_s4Ei7Rka_ySw_arUK1I3sg_E6Pi4ehr";
+
+const ENTRY_FUNCTION_URL =
+    SUPABASE_URL + "/functions/v1/servewell-library-entry";
+
+/* =========================================
+   SESSION AND ADMIN INFORMATION
+========================================= */
+
+const token = sessionStorage.getItem("servewell_token");
+
+let adminData = {};
+
+try {
+    adminData = JSON.parse(
+        sessionStorage.getItem("servewell_admin") || "{}"
+    );
+} catch (error) {
+    adminData = {};
+}
+
+if (!token) {
+    window.location.replace("index.html");
+}
+
+const adminDisplayName =
+    adminData.display_name ||
+    adminData.admin_name ||
+    adminData.full_name ||
+    adminData.username ||
+    "Administrator";
+
+document.getElementById("adminName").textContent = adminDisplayName;
+document.getElementById("adminAvatar").textContent =
+    adminDisplayName.charAt(0).toUpperCase();
+
+document.getElementById("currentYear").textContent =
+    new Date().getFullYear();
+
+/* =========================================
+   SIDEBAR DROPDOWN MENUS
+========================================= */
+
+document.querySelectorAll("[data-menu-toggle]").forEach(function(button) {
+
+    button.addEventListener("click", function() {
+
+        const menuId = this.getAttribute("data-menu-toggle");
+        const menu = document.getElementById(menuId);
+
+        if (!menu) return;
+
+        const isOpen = this.getAttribute("aria-expanded") === "true";
+
+        this.setAttribute("aria-expanded", String(!isOpen));
+        menu.classList.toggle("open", !isOpen);
+
+    });
+
+});
+
+/* =========================================
+   LOGOUT
+========================================= */
+
+document.getElementById("logoutButton").addEventListener("click", function(event) {
+
+    event.preventDefault();
+
+    if (!confirm("Are you sure you want to log out?")) {
+        return;
+    }
+
+    sessionStorage.removeItem("servewell_token");
+    sessionStorage.removeItem("servewell_admin");
+
+    window.location.replace("index.html");
+
+});
+
+/* =========================================
+   SCANNER ELEMENTS
+========================================= */
+
+const scannerStatus = document.getElementById("scannerStatus");
+const statusDot = document.getElementById("statusDot");
+
+const startCameraButton = document.getElementById("startCameraButton");
+const stopCameraButton = document.getElementById("stopCameraButton");
+
+const personEmpty = document.getElementById("personEmpty");
+const personResult = document.getElementById("personResult");
+
+const personPhoto = document.getElementById("personPhoto");
+const personType = document.getElementById("personType");
+const personFullName = document.getElementById("personFullName");
+const personDetails = document.getElementById("personDetails");
+
+const entryMessage = document.getElementById("entryMessage");
+const entryConfirmArea = document.getElementById("entryConfirmArea");
+
+const confirmEntryButton = document.getElementById("confirmEntryButton");
+const cancelScanButton = document.getElementById("cancelScanButton");
+
+const soundToggle = document.getElementById("soundToggle");
+
+let html5QrCode = null;
+let scannerRunning = false;
+let processingScan = false;
+let currentQrData = null;
+let currentPerson = null;
+
+/* =========================================
+   STATUS DISPLAY
+========================================= */
+
+function setScannerStatus(message, type = "normal") {
+
+    scannerStatus.textContent = message;
+
+    statusDot.className = "status-dot";
+
+    if (type === "ready") {
+        statusDot.classList.add("ready");
+    } else if (type === "error") {
+        statusDot.classList.add("error");
+    }
+
+}
+
+/* =========================================
+   MESSAGE DISPLAY
+========================================= */
+
+function showMessage(message, type = "info") {
+
+    entryMessage.textContent = message;
+    entryMessage.className = "entry-message " + type;
+
+}
+
+function clearMessage() {
+
+    entryMessage.textContent = "";
+    entryMessage.className = "entry-message";
+
+}
+
+/* =========================================
+   SOUND AND VOICE
+========================================= */
+
+function playBeep(success = true) {
+
+    if (!soundToggle.checked) return;
+
+    try {
+
+        const AudioContext =
+            window.AudioContext || window.webkitAudioContext;
+
+        if (!AudioContext) return;
+
+        const context = new AudioContext();
+        const oscillator = context.createOscillator();
+        const gain = context.createGain();
+
+        oscillator.connect(gain);
+        gain.connect(context.destination);
+
+        oscillator.frequency.value = success ? 880 : 260;
+        oscillator.type = "sine";
+
+        gain.gain.setValueAtTime(0.15, context.currentTime);
+        gain.gain.exponentialRampToValueAtTime(
+            0.001,
+            context.currentTime + 0.25
+        );
+
+        oscillator.start();
+        oscillator.stop(context.currentTime + 0.25);
+
+        oscillator.onended = function() {
+            context.close();
+        };
+
+    } catch (error) {
+        console.warn("Audio notification unavailable:", error);
+    }
+
+}
+
+function speak(message) {
+
+    if (!soundToggle.checked) return;
+
+    if (!("speechSynthesis" in window)) return;
+
+    window.speechSynthesis.cancel();
+
+    const utterance = new SpeechSynthesisUtterance(message);
+
+    utterance.lang = "en-US";
+    utterance.rate = 0.95;
+    utterance.pitch = 1;
+
+    const voices = window.speechSynthesis.getVoices();
+
+    const preferredVoice = voices.find(function(voice) {
+        return /female/i.test(voice.name);
+    });
+
+    if (preferredVoice) {
+        utterance.voice = preferredVoice;
+    }
+
+    window.speechSynthesis.speak(utterance);
+
+}
+
+/* =========================================
+   SUPABASE EDGE FUNCTION REQUEST
+========================================= */
+
+async function callEntryFunction(action, qrData) {
+
+    const response = await fetch(ENTRY_FUNCTION_URL, {
+
+        method: "POST",
+
+        headers: {
+            "Content-Type": "application/json",
+            "apikey": SUPABASE_PUBLISHABLE_KEY,
+            "Authorization": "Bearer " + token
+        },
+
+        body: JSON.stringify({
+            action: action,
+            qr_data: qrData
+        })
+
+    });
+
+    let result;
+
+    try {
+        result = await response.json();
+    } catch (error) {
+        throw new Error("The server returned an invalid response.");
+    }
+
+    if (!response.ok || result.success === false) {
+        throw new Error(
+            result.message ||
+            result.error ||
+            "The request could not be completed."
+        );
+    }
+
+    return result;
+
+}
+
+/* =========================================
+   PERSON DETAILS DISPLAY
+========================================= */
+
+function addDetail(label, value) {
+
+    if (value === null || value === undefined || value === "") {
+        return "";
+    }
+
+    return `
+        <div class="person-detail-row">
+            <span class="person-detail-label">${escapeHTML(label)}</span>
+            <span class="person-detail-value">${escapeHTML(value)}</span>
+        </div>
+    `;
+
+}
+
+function escapeHTML(value) {
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+function displayPerson(person) {
+
+    currentPerson = person;
+
+    personEmpty.style.display = "none";
+    personResult.classList.add("visible");
+
+    personFullName.textContent =
+        person.full_name || "Unknown Person";
+
+    personType.textContent =
+        person.type === "TEACHER" ? "TEACHER" : "STUDENT";
+
+    personPhoto.innerHTML = "";
+
+    if (person.photo) {
+
+        const image = document.createElement("img");
+        image.src = person.photo;
+        image.alt = "Person Photo";
+
+        image.onerror = function() {
+            personPhoto.textContent =
+                (person.full_name || "?").charAt(0).toUpperCase();
+        };
+
+        personPhoto.appendChild(image);
+
+    } else {
+
+        personPhoto.textContent =
+            (person.full_name || "?").charAt(0).toUpperCase();
+
+    }
+
+    let details = "";
+
+    if (person.type === "STUDENT") {
+
+        details += addDetail("Student Number", person.student_number);
+        details += addDetail("Grade Level", person.grade_level);
+        details += addDetail("Section", person.section);
+
+    } else {
+
+        details += addDetail("Position", person.position);
+        details += addDetail("Department", person.department);
+
+    }
+
+    personDetails.innerHTML = details;
+
+    entryConfirmArea.classList.add("visible");
+    confirmEntryButton.disabled = false;
+    confirmEntryButton.textContent = "Confirm Library Entry";
+
+}
+
+/* =========================================
+   QR CODE LOOKUP
+========================================= */
+
+async function handleQrScan(decodedText) {
+
+    if (processingScan) return;
+
+    processingScan = true;
+    currentQrData = decodedText;
+
+    setScannerStatus("QR code detected. Checking information...");
+
+    playBeep(true);
+
+    try {
+
+        const qrPattern = /^(STUDENT|TEACHER)\|([0-9]+)$/;
+        const match = decodedText.trim().match(qrPattern);
+
+        if (!match) {
+            throw new Error(
+                "Invalid QR code. Please scan an official student or teacher QR card."
+            );
+        }
+
+        /*
+           Stop the camera while the scanned person's
+           information is being checked.
+        */
+        await stopCamera();
+
+        const result = await callEntryFunction(
+            "lookup_person",
+            decodedText.trim()
+        );
+
+        if (!result.person && !result.full_name) {
+            throw new Error("No matching person was found.");
+        }
+
+        const person = result.person || result;
+
+        person.type = person.type || match[1];
+
+        displayPerson(person);
+
+        setScannerStatus(
+            "Person verified. Review the information and confirm the entry.",
+            "ready"
+        );
+
+        showMessage(
+            "Person successfully identified. Confirm the library entry to save the record.",
+            "success"
+        );
+
+        speak("Welcome to the library, " + person.full_name);
+
+    } catch (error) {
+
+        console.error("QR lookup error:", error);
+
+        playBeep(false);
+
+        setScannerStatus(error.message, "error");
+        showMessage(error.message, "error");
+
+        processingScan = false;
+
+        setTimeout(function() {
+
+            if (!currentPerson) {
+                startCamera();
+            }
+
+        }, 1800);
+
+    }
+
+}
+
+/* =========================================
+   CONFIRM LIBRARY ENTRY
+========================================= */
+
+confirmEntryButton.addEventListener("click", async function() {
+
+    if (!currentQrData || !currentPerson) {
+        showMessage("Please scan a valid QR code first.", "error");
+        return;
+    }
+
+    confirmEntryButton.disabled = true;
+    confirmEntryButton.textContent = "Saving Entry...";
+
+    setScannerStatus("Saving library entry record...");
+
+    try {
+
+        const result = await callEntryFunction(
+            "confirm_entry",
+            currentQrData
+        );
+
+        showMessage(
+            result.message || "Library entry successfully recorded.",
+            "success"
+        );
+
+        setScannerStatus(
+            "Library entry successfully recorded. Ready for the next person.",
+            "ready"
+        );
+
+        playBeep(true);
+
+        speak(
+            "Library entry successfully recorded. Thank you."
+        );
+
+        currentQrData = null;
+        currentPerson = null;
+
+        entryConfirmArea.classList.remove("visible");
+
+        setTimeout(function() {
+            resetScannerDisplay();
+            startCamera();
+        }, 2200);
+
+    } catch (error) {
+
+        console.error("Entry confirmation error:", error);
+
+        showMessage(error.message, "error");
+        setScannerStatus(error.message, "error");
+
+        confirmEntryButton.disabled = false;
+        confirmEntryButton.textContent = "Confirm Library Entry";
+
+        playBeep(false);
+
+    }
+
+});
+
+/* =========================================
+   CANCEL CURRENT SCAN
+========================================= */
+
+cancelScanButton.addEventListener("click", async function() {
+
+    currentQrData = null;
+    currentPerson = null;
+    processingScan = false;
+
+    resetScannerDisplay();
+
+    setScannerStatus("Scan cancelled. Ready for the next QR code.");
+
+    await startCamera();
+
+});
+
+function resetScannerDisplay() {
+
+    personResult.classList.remove("visible");
+    personEmpty.style.display = "flex";
+
+    personPhoto.innerHTML = "?";
+    personType.textContent = "STUDENT";
+    personFullName.textContent = "Person Name";
+    personDetails.innerHTML = "";
+
+    entryConfirmArea.classList.remove("visible");
+
+    confirmEntryButton.disabled = false;
+    confirmEntryButton.textContent = "Confirm Library Entry";
+
+    clearMessage();
+
+    processingScan = false;
+
+}
+
+/* =========================================
+   START CAMERA
+========================================= */
+
+async function startCamera() {
+
+    if (scannerRunning || processingScan) return;
+
+    if (!window.Html5Qrcode) {
+
+        setScannerStatus(
+            "QR scanner library could not be loaded. Check your internet connection.",
+            "error"
+        );
+
+        return;
+
+    }
+
+    try {
+
+        if (!html5QrCode) {
+            html5QrCode = new Html5Qrcode("reader");
+        }
+
+        setScannerStatus("Opening camera...");
+
+        const cameraConfig = {
+            fps: 10,
+            qrbox: function(viewfinderWidth, viewfinderHeight) {
+
+                const minEdge = Math.min(
+                    viewfinderWidth,
+                    viewfinderHeight
+                );
+
+                const boxSize = Math.floor(minEdge * 0.70);
+
+                return {
+                    width: boxSize,
+                    height: boxSize
+                };
+
+            }
+        };
+
+        await html5QrCode.start(
+            { facingMode: "environment" },
+            cameraConfig,
+            handleQrScan,
+            function() {
+                /* Ignore normal frame-by-frame scan misses. */
+            }
+        );
+
+        scannerRunning = true;
+
+        startCameraButton.disabled = true;
+        stopCameraButton.disabled = false;
+
+        setScannerStatus(
+            "Camera active. Position a student or teacher QR code in front of the camera.",
+            "ready"
+        );
+
+    } catch (error) {
+
+        console.error("Camera start error:", error);
+
+        scannerRunning = false;
+
+        startCameraButton.disabled = false;
+        stopCameraButton.disabled = true;
+
+        setScannerStatus(
+            "Unable to open camera. Allow camera permission and use the page through HTTPS.",
+            "error"
+        );
+
+    }
+
+}
+
+/* =========================================
+   STOP CAMERA
+========================================= */
+
+async function stopCamera() {
+
+    if (!html5QrCode || !scannerRunning) {
+        scannerRunning = false;
+        return;
+    }
+
+    try {
+
+        await html5QrCode.stop();
+
+    } catch (error) {
+
+        console.warn("Camera stop warning:", error);
+
+    }
+
+    scannerRunning = false;
+
+    startCameraButton.disabled = false;
+    stopCameraButton.disabled = true;
+
+}
+
+/* =========================================
+   CAMERA BUTTONS
+========================================= */
+
+startCameraButton.addEventListener("click", function() {
+    startCamera();
+});
+
+stopCameraButton.addEventListener("click", async function() {
+
+    await stopCamera();
+
+    setScannerStatus("Camera stopped.");
+
+});
+
+/* =========================================
+   INITIALIZE
+========================================= */
+
+window.addEventListener("load", function() {
+
+    setScannerStatus(
+        "Scanner is ready. Click Start Camera to begin."
+    );
+
+});
+
+window.addEventListener("beforeunload", function() {
+
+    if (html5QrCode && scannerRunning) {
+        html5QrCode.stop().catch(function() {});
+    }
+
+});
+
+</script>
+
+</body>
+</html>
