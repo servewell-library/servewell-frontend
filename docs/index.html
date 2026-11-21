@@ -1,0 +1,588 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SERVEWELL | Sign In</title>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap');
+
+        :root {
+            --navy: #102b49;
+            --navy-light: #193d60;
+            --blue: #315d83;
+            --gold: #c8a66a;
+            --white: #ffffff;
+            --muted: #718096;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            min-height: 100vh;
+            font-family: 'DM Sans', sans-serif;
+            background: #e9edf2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 35px;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 1180px;
+            min-height: 680px;
+            display: grid;
+            grid-template-columns: 1.12fr 0.88fr;
+            background: var(--white);
+            overflow: hidden;
+            border-radius: 5px;
+            box-shadow: 0 25px 70px rgba(15, 35, 55, 0.17);
+        }
+
+        .login-image {
+            position: relative;
+            min-height: 680px;
+            background:
+                linear-gradient(
+                    115deg,
+                    rgba(10, 32, 55, 0.93),
+                    rgba(15, 44, 72, 0.76) 55%,
+                    rgba(10, 30, 50, 0.68)
+                ),
+                url('assets/images/login_background.jpg');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 48px 55px;
+        }
+
+        .login-image::before {
+            content: "";
+            position: absolute;
+            inset: 20px;
+            border: 1px solid rgba(255,255,255,0.20);
+            pointer-events: none;
+        }
+
+        .school-brand, .hero-content, .image-bottom {
+            position: relative;
+            z-index: 1;
+        }
+
+        .school-brand {
+            display: flex;
+            align-items: center;
+            gap: 17px;
+        }
+
+        .logo-wrap {
+            width: 75px;
+            height: 75px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.88);
+            padding: 5px;
+        }
+
+        .login-logo {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            mix-blend-mode: multiply;
+        }
+
+        .school-name {
+            font-size: 12px;
+            line-height: 1.7;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .school-level {
+            color: rgba(255,255,255,0.68);
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .hero-content {
+            max-width: 520px;
+            margin-top: 55px;
+            margin-bottom: 45px;
+        }
+
+        .eyebrow {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            color: #d9c08e;
+            text-transform: uppercase;
+            margin-bottom: 24px;
+        }
+
+        .eyebrow::before {
+            content: "";
+            width: 32px;
+            height: 1px;
+            background: var(--gold);
+        }
+
+        .hero-content h1 {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: clamp(48px, 6vw, 76px);
+            line-height: 1.05;
+            font-weight: 600;
+            letter-spacing: -2px;
+            margin-bottom: 19px;
+        }
+
+        .hero-content h2 {
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 3px;
+            color: #e0c995;
+            text-transform: uppercase;
+            margin-bottom: 27px;
+        }
+
+        .hero-content p {
+            max-width: 430px;
+            font-size: 14px;
+            line-height: 1.9;
+            color: rgba(255,255,255,0.76);
+            font-weight: 400;
+        }
+
+        .image-bottom {
+            border-top: 1px solid rgba(255,255,255,0.22);
+            padding-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .image-bottom span {
+            font-size: 9px;
+            letter-spacing: 2px;
+            color: rgba(255,255,255,0.65);
+            text-transform: uppercase;
+        }
+
+        .login-form-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 65px 55px;
+            background: #fff;
+        }
+
+        .login-form-wrapper {
+            width: 100%;
+            max-width: 365px;
+        }
+
+        .form-topline {
+            width: 45px;
+            height: 3px;
+            background: var(--gold);
+            margin-bottom: 36px;
+        }
+
+        .system-label {
+            display: block;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: var(--blue);
+            margin-bottom: 13px;
+        }
+
+        .login-form-wrapper h2 {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 43px;
+            color: var(--navy);
+            font-weight: 600;
+            letter-spacing: -1px;
+            margin-bottom: 10px;
+        }
+
+        .login-subtitle {
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.7;
+            margin-bottom: 37px;
+        }
+
+        .error-message {
+            background: #fff0f0;
+            border-left: 3px solid #c84d4d;
+            color: #a52c2c;
+            padding: 13px 15px;
+            font-size: 12px;
+            margin-bottom: 23px;
+        }
+
+        .form-group { margin-bottom: 23px; }
+
+        .form-group label {
+            display: block;
+            color: #263c53;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .form-group input {
+            width: 100%;
+            height: 51px;
+            border: 1px solid #dce2e9;
+            background: #fafbfd;
+            padding: 0 15px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 13px;
+            color: var(--navy);
+            border-radius: 3px;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        .form-group input:focus {
+            border-color: var(--blue);
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(49,93,131,0.08);
+        }
+
+        .form-group input::placeholder { color: #a5afbb; }
+
+        .password-wrapper { position: relative; }
+
+        .password-wrapper input { padding-right: 65px; }
+
+        .toggle-password {
+            position: absolute;
+            right: 13px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+            background: none;
+            color: var(--blue);
+            font-family: inherit;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .login-button {
+            width: 100%;
+            height: 53px;
+            background: var(--navy);
+            color: white;
+            border: none;
+            border-radius: 3px;
+            margin-top: 9px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: 0.25s;
+        }
+
+        .login-button:hover {
+            background: var(--navy-light);
+            transform: translateY(-1px);
+            box-shadow: 0 7px 18px rgba(16,43,73,0.16);
+        }
+
+        .login-button:disabled {
+            opacity: 0.65;
+            cursor: wait;
+            transform: none;
+        }
+
+        .login-footer {
+            margin-top: 55px;
+            padding-top: 20px;
+            border-top: 1px solid #e8edf1;
+        }
+
+        .login-footer p {
+            font-size: 10px;
+            line-height: 1.9;
+            color: #8995a3;
+        }
+
+        .login-footer p:first-child {
+            color: #43566b;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        @media (max-width: 850px) {
+            body { padding: 18px; }
+
+            .login-container {
+                grid-template-columns: 1fr;
+                max-width: 550px;
+            }
+
+            .login-image { min-height: 430px; padding: 40px; }
+
+            .hero-content {
+                margin-top: 50px;
+                margin-bottom: 30px;
+            }
+
+            .hero-content h1 { font-size: 55px; }
+
+            .login-form-section { padding: 50px 40px; }
+        }
+
+        @media (max-width: 480px) {
+            body { padding: 0; background: white; }
+
+            .login-container {
+                border-radius: 0;
+                box-shadow: none;
+            }
+
+            .login-image { min-height: 370px; padding: 35px 30px; }
+
+            .login-image::before { inset: 12px; }
+
+            .logo-wrap { width: 58px; height: 58px; }
+
+            .school-name { font-size: 10px; }
+
+            .hero-content h1 { font-size: 46px; }
+
+            .login-form-section { padding: 45px 30px; }
+
+            .login-form-wrapper h2 { font-size: 37px; }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="login-container">
+
+    <section class="login-image">
+
+        <div class="school-brand">
+            <div class="logo-wrap">
+                <img
+                    src="assets/images/school_logo.jfif"
+                    alt="School Logo"
+                    class="login-logo"
+                >
+            </div>
+
+            <div>
+                <div class="school-name">
+                    San Roque National High School
+                </div>
+                <div class="school-level">
+                    Senior High School
+                </div>
+            </div>
+        </div>
+
+        <div class="hero-content">
+            <div class="eyebrow">Library Management System</div>
+            <h1>SERVEWELL</h1>
+            <h2>Organized. Accessible. Efficient.</h2>
+            <p>
+                Student and Electronic Resource Verification
+                with Web-based Equipment Evaluation and
+                Library Logistics.
+            </p>
+        </div>
+
+        <div class="image-bottom">
+            <span>San Roque National High School</span>
+            <span>Senior High School</span>
+        </div>
+
+    </section>
+
+    <section class="login-form-section">
+
+        <div class="login-form-wrapper">
+
+            <div class="form-topline"></div>
+
+            <span class="system-label">
+                AUTHORIZED PERSONNEL ACCESS
+            </span>
+
+            <h2>Sign In</h2>
+
+            <p class="login-subtitle">
+                Enter your account credentials to access
+                the library management system.
+            </p>
+
+            <div id="errorMessage" class="error-message" hidden></div>
+
+            <form id="loginForm">
+
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        placeholder="Enter your username"
+                        autocomplete="username"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+
+                    <div class="password-wrapper">
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Enter your password"
+                            autocomplete="current-password"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="toggle-password"
+                            onclick="togglePassword()"
+                        >
+                            Show
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" class="login-button" id="loginButton">
+                    SIGN IN
+                </button>
+
+            </form>
+
+            <div class="login-footer">
+                <p>SERVEWELL Library Management System</p>
+                <p>San Roque National High School</p>
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+
+<script>
+const SUPABASE_LOGIN_URL =
+    "https://dagatdayniulxsecooae.supabase.co/functions/v1/servewell-login";
+
+function togglePassword() {
+    const password = document.getElementById('password');
+    const button = document.querySelector('.toggle-password');
+
+    if (password.type === 'password') {
+        password.type = 'text';
+        button.textContent = 'Hide';
+    } else {
+        password.type = 'password';
+        button.textContent = 'Show';
+    }
+}
+
+const loginForm = document.getElementById('loginForm');
+const loginButton = document.getElementById('loginButton');
+const errorMessage = document.getElementById('errorMessage');
+
+loginForm.addEventListener('submit', async function(event) {
+    event.preventDefault();
+
+    errorMessage.hidden = true;
+    errorMessage.textContent = '';
+
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value;
+
+    if (!username || !password) {
+        showError('Please enter your username and password.');
+        return;
+    }
+
+    loginButton.disabled = true;
+    loginButton.textContent = 'SIGNING IN...';
+
+    try {
+        const response = await fetch(SUPABASE_LOGIN_URL, {
+            method: 'POST',
+            headers: {
+    'Content-Type': 'application/json',
+    'Authorization': 'sb_publishable_s4Ei7Rka_ySw_arUK1I3sg_E6Pi4ehr',
+    'apikey': 'sb_publishable_s4Ei7Rka_ySw_arUK1I3sg_E6Pi4ehr'
+},
+            body: JSON.stringify({ username, password })
+        });
+
+        const result = await response.json();
+
+        if (!response.ok || !result.success || !result.token || !result.admin) {
+            throw new Error(
+                result.error || 'Invalid username or password.'
+            );
+        }
+
+        sessionStorage.setItem('servewell_token', result.token);
+        sessionStorage.setItem(
+            'servewell_admin',
+            JSON.stringify(result.admin)
+        );
+
+        // Temporary destination until the scanner center is converted.
+        showError('Login successful. Scanner Center is still being prepared.');
+
+        errorMessage.style.background = '#edf7f0';
+        errorMessage.style.borderLeftColor = '#3b8b58';
+        errorMessage.style.color = '#28633d';
+
+        loginButton.textContent = 'SIGNED IN';
+
+    } catch (error) {
+        showError(
+            error.message === 'Failed to fetch'
+                ? 'Unable to connect. Please check your internet connection and try again.'
+                : error.message
+        );
+
+        loginButton.disabled = false;
+        loginButton.textContent = 'SIGN IN';
+    }
+});
+
+function showError(message) {
+    errorMessage.textContent = message;
+    errorMessage.hidden = false;
+}
+</script>
+
+</body>
+</html>
