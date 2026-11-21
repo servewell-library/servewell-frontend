@@ -500,7 +500,6 @@
                 <a href="library_entry_logs.html" class="active">
                     <span>◷</span> Library Entry Logs
                 </a>
-
                 <a href="visitor_logs.html">
                     <span>◷</span> Visitor Logs
                 </a>
@@ -533,7 +532,6 @@
 
             <div class="header-admin">
                 <div class="admin-avatar" id="adminAvatar">A</div>
-
                 <div>
                     <strong id="adminName">Administrator</strong>
                     <small>Administrator</small>
@@ -615,7 +613,6 @@
                     <div class="person-empty" id="personEmpty">
 
                         <div class="person-empty-icon">♙</div>
-
                         <h3>Waiting for QR Scan</h3>
 
                         <p>
@@ -832,7 +829,93 @@ function clearMessage() {
 }
 
 /* =========================================
-   SOUND AND VOICE
+   VOICE ENGINE
+========================================= */
+
+let speechVoices = [];
+let speechReady = false;
+
+function loadSpeechVoices() {
+
+    if (!("speechSynthesis" in window)) {
+        console.warn("Speech synthesis is not supported.");
+        return;
+    }
+
+    speechVoices = window.speechSynthesis.getVoices();
+
+    speechReady = speechVoices.length > 0;
+
+    console.log("Available speech voices:", speechVoices);
+
+}
+
+if ("speechSynthesis" in window) {
+
+    loadSpeechVoices();
+
+    window.speechSynthesis.onvoiceschanged = function() {
+        loadSpeechVoices();
+    };
+
+}
+
+function speak(message) {
+
+    if (!soundToggle.checked) return;
+
+    if (!("speechSynthesis" in window)) {
+        console.warn("This browser does not support voice notifications.");
+        return;
+    }
+
+    try {
+
+        window.speechSynthesis.cancel();
+
+        const utterance = new SpeechSynthesisUtterance(message);
+
+        utterance.lang = "en-US";
+        utterance.rate = 0.95;
+        utterance.pitch = 1;
+        utterance.volume = 1;
+
+        const preferredVoice =
+            speechVoices.find(voice =>
+                voice.lang &&
+                voice.lang.toLowerCase().startsWith("en-us")
+            ) ||
+            speechVoices.find(voice =>
+                voice.lang &&
+                voice.lang.toLowerCase().startsWith("en")
+            );
+
+        if (preferredVoice) {
+            utterance.voice = preferredVoice;
+        }
+
+        utterance.onstart = function() {
+            console.log("Voice notification started:", message);
+        };
+
+        utterance.onend = function() {
+            console.log("Voice notification completed.");
+        };
+
+        utterance.onerror = function(event) {
+            console.error("Voice notification error:", event.error);
+        };
+
+        window.speechSynthesis.speak(utterance);
+
+    } catch (error) {
+        console.error("Speech error:", error);
+    }
+
+}
+
+/* =========================================
+   SOUND BEEP
 ========================================= */
 
 function playBeep(success = true) {
@@ -847,49 +930,39 @@ function playBeep(success = true) {
         if (!AudioContext) return;
 
         const context = new AudioContext();
-        const oscillator = context.createOscillator();
-        const gain = context.createGain();
 
-        oscillator.connect(gain);
-        gain.connect(context.destination);
+        context.resume().then(() => {
 
-        oscillator.frequency.value = success ? 880 : 260;
-        oscillator.type = "sine";
+            const oscillator = context.createOscillator();
+            const gain = context.createGain();
 
-        gain.gain.setValueAtTime(0.15, context.currentTime);
+            oscillator.connect(gain);
+            gain.connect(context.destination);
 
-        gain.gain.exponentialRampToValueAtTime(
-            0.001,
-            context.currentTime + 0.25
-        );
+            oscillator.frequency.value = success ? 880 : 260;
+            oscillator.type = "sine";
 
-        oscillator.start();
-        oscillator.stop(context.currentTime + 0.25);
+            gain.gain.setValueAtTime(0.15, context.currentTime);
 
-        oscillator.onended = function() {
-            context.close();
-        };
+            gain.gain.exponentialRampToValueAtTime(
+                0.001,
+                context.currentTime + 0.25
+            );
+
+            oscillator.start();
+            oscillator.stop(context.currentTime + 0.25);
+
+            oscillator.onended = function() {
+                context.close();
+            };
+
+        }).catch(error => {
+            console.warn("Audio context could not start:", error);
+        });
 
     } catch (error) {
         console.warn("Audio notification unavailable:", error);
     }
-
-}
-
-function speak(message) {
-
-    if (!soundToggle.checked) return;
-    if (!("speechSynthesis" in window)) return;
-
-    window.speechSynthesis.cancel();
-
-    const utterance = new SpeechSynthesisUtterance(message);
-
-    utterance.lang = "en-US";
-    utterance.rate = 0.95;
-    utterance.pitch = 1;
-
-    window.speechSynthesis.speak(utterance);
 
 }
 
@@ -1066,12 +1139,6 @@ async function handleQrScan(decodedText) {
             "lookup_person",
             currentQrData
         );
-
-        /*
-         * Normalize possible response structures.
-         * The function may return person data at the root,
-         * inside "person", or inside "details".
-         */
 
         const sourcePerson =
             result.person ||
@@ -1309,9 +1376,7 @@ async function startCamera() {
             { facingMode: "environment" },
             cameraConfig,
             handleQrScan,
-            function() {
-                // Ignore normal frame-by-frame scan misses.
-            }
+            function() {}
         );
 
         scannerRunning = true;
@@ -1375,7 +1440,18 @@ async function stopCamera() {
 ========================================= */
 
 startCameraButton.addEventListener("click", function() {
+
+    /*
+       This announcement is triggered directly by the
+       Start Camera click to help unlock browser speech.
+    */
+
+    if (soundToggle.checked) {
+        speak("Voice notifications are ready.");
+    }
+
     startCamera();
+
 });
 
 stopCameraButton.addEventListener("click", async function() {
@@ -1387,10 +1463,24 @@ stopCameraButton.addEventListener("click", async function() {
 });
 
 /* =========================================
+   SOUND TOGGLE
+========================================= */
+
+soundToggle.addEventListener("change", function() {
+
+    if (!this.checked && "speechSynthesis" in window) {
+        window.speechSynthesis.cancel();
+    }
+
+});
+
+/* =========================================
    INITIALIZE
 ========================================= */
 
 window.addEventListener("load", function() {
+
+    loadSpeechVoices();
 
     setScannerStatus(
         "Scanner is ready. Click Start Camera to begin."
@@ -1399,6 +1489,10 @@ window.addEventListener("load", function() {
 });
 
 window.addEventListener("beforeunload", function() {
+
+    if ("speechSynthesis" in window) {
+        window.speechSynthesis.cancel();
+    }
 
     if (html5QrCode && scannerRunning) {
         html5QrCode.stop().catch(function() {});
