@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,10 +18,7 @@ body {
     min-height: 100vh;
     color: #ffffff;
     background:
-        linear-gradient(
-            rgba(8, 29, 53, 0.55),
-            rgba(8, 29, 53, 0.68)
-        ),
+        linear-gradient(rgba(8, 29, 53, 0.55), rgba(8, 29, 53, 0.68)),
         url('assets/images/scanner_background.jpg');
     background-size: cover;
     background-position: center;
@@ -265,7 +263,7 @@ body {
 
     <div class="scanner-grid">
 
-        <a href="#" class="scanner-card" data-module="Student / Teacher Entry">
+        <a href="library_entry_scanner.html" class="scanner-card">
             <div class="scanner-icon">🎓</div>
             <div class="scanner-info">
                 <h3>Student / Teacher Entry</h3>
@@ -318,27 +316,27 @@ const savedAdmin = sessionStorage.getItem('servewell_admin');
 
 if (!token || !savedAdmin) {
     window.location.replace('index.html');
+} else {
+    try {
+        const admin = JSON.parse(savedAdmin);
+        document.getElementById('adminName').textContent =
+            admin.full_name || 'Librarian';
+    } catch (error) {
+        sessionStorage.removeItem('servewell_token');
+        sessionStorage.removeItem('servewell_admin');
+        window.location.replace('index.html');
+    }
 }
 
-try {
-    const admin = JSON.parse(savedAdmin);
-    document.getElementById('adminName').textContent =
-        admin.full_name || 'Librarian';
-} catch (error) {
-    sessionStorage.removeItem('servewell_token');
-    sessionStorage.removeItem('servewell_admin');
-    window.location.replace('index.html');
-}
-
-document.querySelectorAll('.scanner-card').forEach(card => {
+// Only the modules that are not yet connected remain placeholders.
+document.querySelectorAll('.scanner-card[data-module]').forEach(card => {
     card.addEventListener('click', function(event) {
         event.preventDefault();
 
-        const moduleName = this.dataset.module;
         const notice = document.getElementById('notice');
-
         notice.textContent =
-            moduleName + ' is not yet available. This module is still being converted to the online SERVEWELL system.';
+            this.dataset.module +
+            ' is not yet available. This module is still being converted to the online SERVEWELL system.';
 
         notice.style.display = 'block';
     });
