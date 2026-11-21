@@ -6,15 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Library Entry Scanner | SERVEWELL</title>
 
-    <!-- ORIGINAL SERVEWELL CSS -->
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/glass_theme.css">
 
     <style>
-        /* ORIGINAL HEADER SIDEBAR DROPDOWNS */
-        .sidebar-menu {
-            overflow-y: auto;
-        }
+        .sidebar-menu { overflow-y: auto; }
 
         .sidebar-group-button {
             width: 100%;
@@ -51,35 +47,20 @@
             padding-left: 8px;
         }
 
-        .sidebar-submenu.open {
-            display: block;
-        }
+        .sidebar-submenu.open { display: block; }
 
-        .sidebar-submenu a {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 11px 14px;
-            margin: 3px 0;
-            text-decoration: none;
-        }
-
-        .sidebar-submenu a span {
-            min-width: 18px;
-        }
-
+        .sidebar-submenu a,
         .sidebar-direct-link {
             display: flex;
             align-items: center;
             gap: 10px;
-            padding: 12px 14px;
+            padding: 11px 14px;
             text-decoration: none;
         }
 
-        /* LIBRARY ENTRY SCANNER CONTENT */
-        .entry-scanner-heading {
-            margin-bottom: 25px;
-        }
+        .sidebar-submenu a span { min-width: 18px; }
+
+        .entry-scanner-heading { margin-bottom: 25px; }
 
         .entry-scanner-heading h1 {
             color: #ffffff;
@@ -144,9 +125,7 @@
             object-fit: cover;
         }
 
-        #reader img {
-            max-width: 100%;
-        }
+        #reader img { max-width: 100%; }
 
         #reader__dashboard_section_csr button {
             background: linear-gradient(115deg,#287fe0,#625de0);
@@ -213,9 +192,7 @@
             background: linear-gradient(115deg,#287fe0,#625de0);
         }
 
-        .scanner-button:hover {
-            filter: brightness(1.12);
-        }
+        .scanner-button:hover { filter: brightness(1.12); }
 
         .scanner-button:disabled {
             opacity: .45;
@@ -231,9 +208,7 @@
             font-size: 12px;
         }
 
-        .sound-control input {
-            accent-color: #55a9ff;
-        }
+        .sound-control input { accent-color: #55a9ff; }
 
         .person-panel {
             min-height: 360px;
@@ -283,9 +258,7 @@
             text-align: center;
         }
 
-        .person-result.visible {
-            display: block;
-        }
+        .person-result.visible { display: block; }
 
         .person-photo {
             width: 112px;
@@ -349,9 +322,7 @@
             font-size: 12px;
         }
 
-        .person-detail-row:last-child {
-            border-bottom: 0;
-        }
+        .person-detail-row:last-child { border-bottom: 0; }
 
         .person-detail-label {
             color: #a8bad1;
@@ -431,36 +402,19 @@
             line-height: 1.8;
         }
 
-        .entry-instructions strong {
-            color: #ffffff;
-        }
+        .entry-instructions strong { color: #ffffff; }
 
-        .admin-footer {
-            margin-top: 0;
-        }
+        .admin-footer { margin-top: 0; }
 
         @media (max-width: 950px) {
-            .entry-scanner-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .person-panel {
-                min-height: 320px;
-            }
+            .entry-scanner-grid { grid-template-columns: 1fr; }
+            .person-panel { min-height: 320px; }
         }
 
         @media (max-width: 700px) {
-            .entry-glass-card {
-                padding: 17px;
-            }
-
-            .entry-scanner-heading h1 {
-                font-size: 22px;
-            }
-
-            .person-name {
-                font-size: 18px;
-            }
+            .entry-glass-card { padding: 17px; }
+            .entry-scanner-heading h1 { font-size: 22px; }
+            .person-name { font-size: 18px; }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -480,7 +434,6 @@
 
 <div class="admin-layout">
 
-    <!-- ORIGINAL SERVEWELL SIDEBAR -->
     <aside class="sidebar">
 
         <div class="sidebar-brand">
@@ -495,13 +448,11 @@
 
             <p class="menu-heading">MAIN MENU</p>
 
-            <a href="dashboard.html"
-               class="sidebar-direct-link">
+            <a href="dashboard.html" class="sidebar-direct-link">
                 <span>▦</span> Dashboard
             </a>
 
-            <a href="scanner_center.html"
-               class="sidebar-direct-link">
+            <a href="scanner_center.html" class="sidebar-direct-link">
                 <span>⌕</span> Scanner Center
             </a>
 
@@ -514,14 +465,12 @@
             </button>
 
             <div id="library-menu" class="sidebar-submenu">
-
                 <a href="students.html"><span>♙</span> Students</a>
                 <a href="teachers.html"><span>♙</span> Teachers</a>
                 <a href="special_visitors.html"><span>♧</span> Special Visitors</a>
                 <a href="books.html"><span>▤</span> Book Inventory</a>
                 <a href="borrowing.html"><span>⇄</span> Borrowing Records</a>
                 <a href="returns.html"><span>↩</span> Return Books</a>
-
             </div>
 
             <button type="button"
@@ -533,12 +482,10 @@
             </button>
 
             <div id="printable-menu" class="sidebar-submenu">
-
                 <a href="student_qr.html"><span>▣</span> Student QR Cards</a>
                 <a href="teacher_qr.html"><span>▣</span> Teacher QR Cards</a>
                 <a href="book_qr.html"><span>▣</span> Book QR Codes</a>
                 <a href="visitor_id.html"><span>▤</span> Printable Visitor IDs</a>
-
             </div>
 
             <button type="button"
@@ -550,7 +497,6 @@
             </button>
 
             <div id="activity-menu" class="sidebar-submenu open">
-
                 <a href="library_entry_logs.html" class="active">
                     <span>◷</span> Library Entry Logs
                 </a>
@@ -558,7 +504,6 @@
                 <a href="visitor_logs.html">
                     <span>◷</span> Visitor Logs
                 </a>
-
             </div>
 
             <p class="menu-heading">ANALYTICS</p>
@@ -577,7 +522,6 @@
 
     </aside>
 
-    <!-- ORIGINAL MAIN CONTENT STRUCTURE -->
     <main class="admin-main">
 
         <header class="top-header">
@@ -588,14 +532,12 @@
             </div>
 
             <div class="header-admin">
-
                 <div class="admin-avatar" id="adminAvatar">A</div>
 
                 <div>
                     <strong id="adminName">Administrator</strong>
                     <small>Administrator</small>
                 </div>
-
             </div>
 
         </header>
@@ -612,7 +554,6 @@
 
             <div class="entry-scanner-grid">
 
-                <!-- CAMERA SCANNER -->
                 <div class="entry-glass-card">
 
                     <h2 class="entry-card-title">QR Code Scanner</h2>
@@ -632,7 +573,6 @@
                     </div>
 
                     <div class="scanner-controls">
-
                         <button type="button"
                                 class="scanner-button primary"
                                 id="startCameraButton">
@@ -645,7 +585,6 @@
                                 disabled>
                             Stop Camera
                         </button>
-
                     </div>
 
                     <label class="sound-control">
@@ -665,7 +604,6 @@
 
                 </div>
 
-                <!-- PERSON INFORMATION -->
                 <div class="entry-glass-card person-panel">
 
                     <h2 class="entry-card-title">Scanned Person</h2>
@@ -743,12 +681,9 @@
    SERVEWELL CONFIGURATION
 ========================================= */
 
-const SUPABASE_URL = "https://dagatdayniulxsecooae.supabase.co";
+const SUPABASE_URL =
+    "https://dagatdayniulxsecooae.supabase.co";
 
-/*
-   Paste your existing SUPABASE PUBLISHABLE KEY below.
-   Do NOT use the service role key here.
-*/
 const SUPABASE_PUBLISHABLE_KEY =
     "sb_publishable_s4Ei7Rka_ySw_arUK1I3sg_E6Pi4ehr";
 
@@ -756,7 +691,7 @@ const ENTRY_FUNCTION_URL =
     SUPABASE_URL + "/functions/v1/servewell-library-entry";
 
 /* =========================================
-   SESSION AND ADMIN INFORMATION
+   SESSION
 ========================================= */
 
 const token = sessionStorage.getItem("servewell_token");
@@ -790,10 +725,10 @@ document.getElementById("currentYear").textContent =
     new Date().getFullYear();
 
 /* =========================================
-   SIDEBAR DROPDOWN MENUS
+   SIDEBAR
 ========================================= */
 
-document.querySelectorAll("[data-menu-toggle]").forEach(function(button) {
+document.querySelectorAll("[data-menu-toggle]").forEach(button => {
 
     button.addEventListener("click", function() {
 
@@ -802,7 +737,8 @@ document.querySelectorAll("[data-menu-toggle]").forEach(function(button) {
 
         if (!menu) return;
 
-        const isOpen = this.getAttribute("aria-expanded") === "true";
+        const isOpen =
+            this.getAttribute("aria-expanded") === "true";
 
         this.setAttribute("aria-expanded", String(!isOpen));
         menu.classList.toggle("open", !isOpen);
@@ -819,9 +755,7 @@ document.getElementById("logoutButton").addEventListener("click", function(event
 
     event.preventDefault();
 
-    if (!confirm("Are you sure you want to log out?")) {
-        return;
-    }
+    if (!confirm("Are you sure you want to log out?")) return;
 
     sessionStorage.removeItem("servewell_token");
     sessionStorage.removeItem("servewell_admin");
@@ -831,7 +765,7 @@ document.getElementById("logoutButton").addEventListener("click", function(event
 });
 
 /* =========================================
-   SCANNER ELEMENTS
+   ELEMENTS
 ========================================= */
 
 const scannerStatus = document.getElementById("scannerStatus");
@@ -863,13 +797,12 @@ let currentQrData = null;
 let currentPerson = null;
 
 /* =========================================
-   STATUS DISPLAY
+   STATUS
 ========================================= */
 
 function setScannerStatus(message, type = "normal") {
 
     scannerStatus.textContent = message;
-
     statusDot.className = "status-dot";
 
     if (type === "ready") {
@@ -881,7 +814,7 @@ function setScannerStatus(message, type = "normal") {
 }
 
 /* =========================================
-   MESSAGE DISPLAY
+   MESSAGES
 ========================================= */
 
 function showMessage(message, type = "info") {
@@ -924,6 +857,7 @@ function playBeep(success = true) {
         oscillator.type = "sine";
 
         gain.gain.setValueAtTime(0.15, context.currentTime);
+
         gain.gain.exponentialRampToValueAtTime(
             0.001,
             context.currentTime + 0.25
@@ -945,7 +879,6 @@ function playBeep(success = true) {
 function speak(message) {
 
     if (!soundToggle.checked) return;
-
     if (!("speechSynthesis" in window)) return;
 
     window.speechSynthesis.cancel();
@@ -956,22 +889,12 @@ function speak(message) {
     utterance.rate = 0.95;
     utterance.pitch = 1;
 
-    const voices = window.speechSynthesis.getVoices();
-
-    const preferredVoice = voices.find(function(voice) {
-        return /female/i.test(voice.name);
-    });
-
-    if (preferredVoice) {
-        utterance.voice = preferredVoice;
-    }
-
     window.speechSynthesis.speak(utterance);
 
 }
 
 /* =========================================
-   SUPABASE EDGE FUNCTION REQUEST
+   SUPABASE EDGE FUNCTION
 ========================================= */
 
 async function callEntryFunction(action, qrData) {
@@ -1014,12 +937,27 @@ async function callEntryFunction(action, qrData) {
 }
 
 /* =========================================
-   PERSON DETAILS DISPLAY
+   SAFE HTML
 ========================================= */
+
+function escapeHTML(value) {
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
 
 function addDetail(label, value) {
 
-    if (value === null || value === undefined || value === "") {
+    if (
+        value === null ||
+        value === undefined ||
+        value === ""
+    ) {
         return "";
     }
 
@@ -1032,16 +970,9 @@ function addDetail(label, value) {
 
 }
 
-function escapeHTML(value) {
-
-    return String(value)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-
-}
+/* =========================================
+   DISPLAY PERSON
+========================================= */
 
 function displayPerson(person) {
 
@@ -1061,6 +992,7 @@ function displayPerson(person) {
     if (person.photo) {
 
         const image = document.createElement("img");
+
         image.src = person.photo;
         image.alt = "Person Photo";
 
@@ -1096,13 +1028,14 @@ function displayPerson(person) {
     personDetails.innerHTML = details;
 
     entryConfirmArea.classList.add("visible");
+
     confirmEntryButton.disabled = false;
     confirmEntryButton.textContent = "Confirm Library Entry";
 
 }
 
 /* =========================================
-   QR CODE LOOKUP
+   QR LOOKUP
 ========================================= */
 
 async function handleQrScan(decodedText) {
@@ -1110,7 +1043,7 @@ async function handleQrScan(decodedText) {
     if (processingScan) return;
 
     processingScan = true;
-    currentQrData = decodedText;
+    currentQrData = decodedText.trim();
 
     setScannerStatus("QR code detected. Checking information...");
 
@@ -1119,7 +1052,7 @@ async function handleQrScan(decodedText) {
     try {
 
         const qrPattern = /^(STUDENT|TEACHER)\|([0-9]+)$/;
-        const match = decodedText.trim().match(qrPattern);
+        const match = currentQrData.match(qrPattern);
 
         if (!match) {
             throw new Error(
@@ -1127,24 +1060,56 @@ async function handleQrScan(decodedText) {
             );
         }
 
-        /*
-           Stop the camera while the scanned person's
-           information is being checked.
-        */
         await stopCamera();
 
         const result = await callEntryFunction(
             "lookup_person",
-            decodedText.trim()
+            currentQrData
         );
 
-        if (!result.person && !result.full_name) {
-            throw new Error("No matching person was found.");
+        /*
+         * Normalize possible response structures.
+         * The function may return person data at the root,
+         * inside "person", or inside "details".
+         */
+
+        const sourcePerson =
+            result.person ||
+            result.data ||
+            result;
+
+        const details =
+            sourcePerson.details ||
+            result.details ||
+            {};
+
+        const person = {
+            ...details,
+            ...sourcePerson,
+
+            type:
+                sourcePerson.type ||
+                result.type ||
+                match[1],
+
+            full_name:
+                sourcePerson.full_name ||
+                details.full_name ||
+                result.full_name ||
+                "",
+
+            photo:
+                sourcePerson.photo ||
+                details.photo ||
+                result.photo ||
+                null
+        };
+
+        if (!person.full_name) {
+            throw new Error(
+                "No matching person was found or the server returned incomplete information."
+            );
         }
-
-        const person = result.person || result;
-
-        person.type = person.type || match[1];
 
         displayPerson(person);
 
@@ -1218,18 +1183,18 @@ confirmEntryButton.addEventListener("click", async function() {
 
         playBeep(true);
 
-        speak(
-            "Library entry successfully recorded. Thank you."
-        );
+        speak("Library entry successfully recorded. Thank you.");
 
         currentQrData = null;
         currentPerson = null;
 
         entryConfirmArea.classList.remove("visible");
 
-        setTimeout(function() {
+        setTimeout(async function() {
+
             resetScannerDisplay();
-            startCamera();
+            await startCamera();
+
         }, 2200);
 
     } catch (error) {
@@ -1249,7 +1214,7 @@ confirmEntryButton.addEventListener("click", async function() {
 });
 
 /* =========================================
-   CANCEL CURRENT SCAN
+   CANCEL SCAN
 ========================================= */
 
 cancelScanButton.addEventListener("click", async function() {
@@ -1265,6 +1230,10 @@ cancelScanButton.addEventListener("click", async function() {
     await startCamera();
 
 });
+
+/* =========================================
+   RESET DISPLAY
+========================================= */
 
 function resetScannerDisplay() {
 
@@ -1315,7 +1284,9 @@ async function startCamera() {
         setScannerStatus("Opening camera...");
 
         const cameraConfig = {
+
             fps: 10,
+
             qrbox: function(viewfinderWidth, viewfinderHeight) {
 
                 const minEdge = Math.min(
@@ -1331,6 +1302,7 @@ async function startCamera() {
                 };
 
             }
+
         };
 
         await html5QrCode.start(
@@ -1338,7 +1310,7 @@ async function startCamera() {
             cameraConfig,
             handleQrScan,
             function() {
-                /* Ignore normal frame-by-frame scan misses. */
+                // Ignore normal frame-by-frame scan misses.
             }
         );
 
@@ -1433,7 +1405,6 @@ window.addEventListener("beforeunload", function() {
     }
 
 });
-
 </script>
 
 </body>
